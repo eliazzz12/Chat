@@ -4,11 +4,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GroupChat extends Chat {
-    private String name;
     private List<User> users;
 
     public GroupChat(String name, List<User> users) {
-        this.name = name;
+        super(name);
         this.users = users;
     }
 
