@@ -23,17 +23,17 @@ public class LoginController {
     private Button loginButton;
     @FXML
     private Label availableLabel;
-    private static final String defaultLabelText = "Username available: ";
+    private static final String userNameNotAvailableText = "Username not available";
     private boolean connected;
 
     private void launchApp() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 350, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         try {
             AppController controller = fxmlLoader.getController();
             ChatManagerGUI cm = ChatManagerGUI.getInstance(loginManager.getParameters(), controller);
             controller.setChatManager(cm);
-            controller.initialize();
+            controller.initialize(usernameInput.getText());
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -43,12 +43,12 @@ public class LoginController {
     }
 
     public void attemptLogin() throws IOException {
-        if(!connected){
-            loginManager.connect();
-        }
-        String username = this.usernameInput.getText();
         boolean success = false;
         try {
+            if(!connected){
+                loginManager.connect();
+            }
+            String username = this.usernameInput.getText();
             success = loginManager.login(username);
         } catch (IOException e) {
             availableLabel.setText("Login not available at this time");
@@ -56,6 +56,8 @@ public class LoginController {
         if(success){
             System.out.println("Lanzando app");
             launchApp();
+        } else {
+            availableLabel.setText(userNameNotAvailableText);
         }
     }
 
