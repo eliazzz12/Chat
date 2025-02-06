@@ -33,7 +33,7 @@ public class LoginController {
             AppController controller = fxmlLoader.getController();
             ChatManagerGUI cm = ChatManagerGUI.getInstance(loginManager.getParameters(), controller);
             controller.setChatManager(cm);
-            Platform.runLater(controller.initialize());
+            controller.initialize();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

@@ -39,7 +39,7 @@ public class AppController {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chats-preview.fxml"));
         try {
             Parent item = fxmlLoader.load();
-            previewController = (ChatsPreviewController) fxmlLoader.getController();
+            previewController = fxmlLoader.getController();
             vboxPreview.getChildren().add(item);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,7 +50,7 @@ public class AppController {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-view.fxml"));
         try {
             Parent item = fxmlLoader.load();
-            chatViewController = (ChatViewController) fxmlLoader.getController();
+            chatViewController = fxmlLoader.getController();
             vboxChatScreen.getChildren().add(item);
         } catch (IOException e) {
             throw new RuntimeException(e);

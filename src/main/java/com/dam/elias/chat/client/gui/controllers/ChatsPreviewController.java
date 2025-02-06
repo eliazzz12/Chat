@@ -13,14 +13,11 @@ import java.io.IOException;
 
 public class ChatsPreviewController {
     ChatInfoController controller;
-    ChatManagerGUI cm = ChatManagerGUI.getInstance();
 
     @FXML
     TextField tf_busqueda;
     @FXML
     VBox vb_chats_info;
-
-
 
     public void nuevoChat(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-info.fxml"));
