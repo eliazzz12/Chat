@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vb_chats_preview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.12"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controllers.ChatsPreviewController">
+<VBox fx:id="vb_chats_preview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controllers.ChatsPreviewController">
    <children>
-      <Label fx:id="label_chat_preview_title" text="Conversaciones" />
-      <HBox fx:id="hb_preview_top" prefHeight="30.0" prefWidth="200.0">
+      <VBox alignment="CENTER" prefHeight="80.0" prefWidth="100.0">
          <children>
-<!--            <TextField fx:id="tf_busqueda" promptText="Buscar" />-->
-            <Button fx:id="btn_nuevo_chat" mnemonicParsing="false" onAction="#nuevoChat" text="Nuevo Chat" />
+            <Label fx:id="label_chat_preview_title" text="Conversaciones">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox fx:id="hb_preview_top" alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="searchNameInput" />
+      <!--            <TextField fx:id="tf_busqueda" promptText="Buscar" />-->
+                  <Button fx:id="newChatButton" mnemonicParsing="false" onAction="#nuevoChat" text="Nuevo Chat" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <VBox fx:id="vb_chats_info" maxHeight="-Infinity" prefHeight="0.0" prefWidth="100.0" />
+      </VBox>
+      <ScrollPane prefHeight="520.0" prefWidth="300.0">
+         <content>
+            <VBox fx:id="vb_chats_info" maxHeight="-Infinity" prefHeight="520.0" prefWidth="284.0" />
+         </content>
+      </ScrollPane>
    </children>
 </VBox>
