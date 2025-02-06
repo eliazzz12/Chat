@@ -7,16 +7,14 @@ import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class AppController {
     private ChatManagerGUI chatManager;
@@ -28,11 +26,14 @@ public class AppController {
     private VBox vboxPreview;
     @FXML
     private VBox vboxChatScreen;
+    @FXML
+    private Label userNameLabel;
 
 
-    public void initialize() {
+    public void initialize(String username) {
         initializeChatPreview();
         initializeChatView();
+        userNameLabel.setText("User: "+username);
     }
 
     private void initializeChatPreview(){
