@@ -1,8 +1,6 @@
 package com.dam.elias.chat;
 
 import com.dam.elias.chat.client.api.connection.LoginManagerGUI;
-import com.dam.elias.chat.client.api.model.ChatManagerGUI;
-import com.dam.elias.chat.client.gui.controllers.AppController;
 import com.dam.elias.chat.client.gui.controllers.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -27,7 +24,7 @@ public class App extends Application {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        stage.setTitle("Chat TCP Elias");
+        stage.setTitle("Chat TCP DAM");
         stage.show();
     }
 
