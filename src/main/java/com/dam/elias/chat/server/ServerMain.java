@@ -21,16 +21,21 @@ public class ServerMain {
     public static void main(String[] args) {
         final int port = 10101;
         new Thread(new MessageSenderRunnable(users, messages)).start();
+        ServerSocket serverSocket = null;
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            while (true) {
-                Socket client = serverSocket.accept();
-                acceptClient(client);
-                System.out.println("Client connected");
-            }
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+        while (true) {
+                try {
+                    Socket client = serverSocket.accept();
+                    acceptClient(client);
+                    System.out.println("Client connected");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     private static void acceptClient(Socket client) throws IOException {
@@ -61,6 +66,10 @@ public class ServerMain {
         }
         users.put(user, new Sender(out));
         System.out.println("SERVER: User added "+user.getUsername());
-        new Thread(new ReceivingRunnable(users, messages, in)).start();
+        new Thread(new ReceivingRunnable(user, users, messages, in)).start();
+    }
+
+    public static void removeUser(User user) {
+        users.remove(user);
     }
 }

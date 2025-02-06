@@ -6,6 +6,7 @@ import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Map;
@@ -13,12 +14,14 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class ReceivingRunnable implements Runnable {
+    private User user;
     private static Map<User, Sender> users;
     private static BlockingQueue<Message> messageQueue;
     private ObjectInputStream in;
 
-    public ReceivingRunnable(Map<User, Sender> users, BlockingQueue<Message> messageQueue,
+    public ReceivingRunnable(User user, Map<User, Sender> users, BlockingQueue<Message> messageQueue,
                              ObjectInputStream in) {
+        setUser(user);
         setUsers(users);
         setMessageQueue(messageQueue);
         setIn(in);
@@ -26,9 +29,14 @@ public class ReceivingRunnable implements Runnable {
 
     @Override
     public void run() {
-        while(!Thread.interrupted()) {
+        boolean userIsOnline = true;
+        while(userIsOnline) {
             try {
                 handle(in.readObject());
+            } catch (EOFException ex) {
+                System.out.println("removing user "+user.getUsername());
+                users.remove(user);
+                userIsOnline = false;
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -127,5 +135,12 @@ public class ReceivingRunnable implements Runnable {
 
     static void handleChat(Chat chat){
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public void setUser(User user) {
+        if(user == null) {
+            throw new IllegalArgumentException("user cannot be null");
+        }
+        this.user = user;
     }
 }
