@@ -1,4 +1,4 @@
-package com.dam.elias.chat.api.model;
+package com.dam.elias.chat.client.api.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,15 +7,13 @@ public class Message implements Serializable {
     private String id;
     private int counter = 1;
     private User sender;
-    private User receiver;
     private Chat chat;
     private String text;
     private LocalDateTime timestamp;
     private boolean sent;
 
-    protected Message(User sender, User receiver, Chat chat, String text) {
+    protected Message(User sender, Chat chat, String text) {
         setSender(sender);
-        setReceiver(receiver);
         setChat(chat);
         setText(text);
         timestamp = LocalDateTime.now();
@@ -35,13 +33,6 @@ public class Message implements Serializable {
         this.sender = sender;
     }
 
-    protected void setReceiver(User receiver) {
-        if(receiver == null) {
-            throw new IllegalArgumentException("Receiver cannot be null");
-        }
-        this.receiver = receiver;
-    }
-
     protected void setChat(Chat chat) {
         if(chat == null) {
             throw new IllegalArgumentException("Chat cannot be null");
@@ -49,7 +40,7 @@ public class Message implements Serializable {
         this.chat = chat;
     }
 
-    protected void sent(){
+    public void sent(){
         sent = true;
     }
 
@@ -71,10 +62,6 @@ public class Message implements Serializable {
 
     public boolean isSent() {
         return sent;
-    }
-
-    public User getReceiver() {
-        return receiver;
     }
 
     public String getText() {

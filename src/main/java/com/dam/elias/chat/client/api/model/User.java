@@ -1,10 +1,11 @@
-package com.dam.elias.chat.api.model;
+package com.dam.elias.chat.client.api.model;
 
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class User implements Serializable {
     /**
@@ -15,7 +16,7 @@ public class User implements Serializable {
     /**
      * Mapea cada chat con su id.
      */
-    private Map<Integer, Chat> chats = new HashMap<>();
+    private Map<Integer, Chat> chats;
     /**
      * Imágen de perfil del usuario
      */
@@ -23,10 +24,11 @@ public class User implements Serializable {
 
     public User(String username) {
         setUsername(username);
+        chats = new HashMap<>();
     }
 
     public void addChat(Chat chat) {
-        chats.put(chat.getId(), chat);
+//        chats.put(chat.getId(), chat);
     }
 
     public void setUsername(String username) {
@@ -51,5 +53,18 @@ public class User implements Serializable {
 
     public Image getProfilePicture() {
         return profilePicture;
+    }
+
+     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(username);
     }
 }

@@ -3,12 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vb_chats_preview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.gui.controllers.ChatPreviewController">
+<VBox fx:id="vb_chats_preview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controllers.ChatsPreviewController">
    <children>
       <Label fx:id="label_chat_preview_title" text="Conversaciones" />
       <HBox fx:id="hb_preview_top" prefHeight="30.0" prefWidth="200.0">
          <children>
-            <TextField fx:id="tf_busqueda" promptText="Buscar" />
+<!--            <TextField fx:id="tf_busqueda" promptText="Buscar" />-->
             <Button fx:id="btn_nuevo_chat" mnemonicParsing="false" onAction="#nuevoChat" text="Nuevo Chat" />
          </children>
       </HBox>

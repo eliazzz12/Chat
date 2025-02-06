@@ -1,4 +1,4 @@
-package com.dam.elias.chat.api.model;
+package com.dam.elias.chat.client.api.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,11 @@ public abstract class Chat implements Serializable {
         setName(name);
     }
 
-    protected Message getLastMessage(){
+    public boolean isPrivate(){
+        return this.getClass() == PrivateChat.class;
+    }
+
+    public Message getLastMessage(){
         return messageList.getLast();
     }
 
@@ -25,5 +29,13 @@ public abstract class Chat implements Serializable {
             throw new IllegalArgumentException("Name cannot be null or empty");
         }
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Message> getMessageList() {
+        return messageList;
     }
 }

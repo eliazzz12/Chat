@@ -6,9 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="bp_main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.gui.controllers.AppController">
+<BorderPane fx:id="bp_main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controllers.AppController">
    <left>
       <VBox fx:id="vb_chat_type" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -42,10 +40,10 @@
       <Pane fx:id="panel_abajo_vacio" prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox fx:id="vboxPreview" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox fx:id="vboxChatScreen" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </right>
    <top>
       <HBox fx:id="menu_top" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">

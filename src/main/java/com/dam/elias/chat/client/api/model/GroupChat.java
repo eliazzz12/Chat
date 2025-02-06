@@ -1,6 +1,5 @@
-package com.dam.elias.chat.api.model;
+package com.dam.elias.chat.client.api.model;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class GroupChat extends Chat {
