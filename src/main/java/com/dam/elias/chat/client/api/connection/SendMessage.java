@@ -8,12 +8,10 @@ import java.io.ObjectOutputStream;
 
 public class SendMessage implements Runnable {
     private ObjectOutputStream out;
-    private Chat chat;
     private Message message;
 
-    public SendMessage(ObjectOutputStream out, Chat chat, Message message) {
+    public SendMessage(ObjectOutputStream out, Message message) {
         setOut(out);
-        setChat(chat);
         setMessage(message);
     }
 
@@ -23,7 +21,6 @@ public class SendMessage implements Runnable {
         boolean sent = false;
         do{
             try {
-                out.writeObject(chat);
                 out.writeObject(message);
                 out.flush();
                 message.sent();
@@ -50,13 +47,6 @@ public class SendMessage implements Runnable {
             throw new IllegalArgumentException("ObjectOutputStream cannot be null");
         }
         this.out = out;
-    }
-
-    public void setChat(Chat chat) {
-        if(chat == null) {
-            throw new IllegalArgumentException("Chat cannot be null");
-        }
-        this.chat = chat;
     }
 
     public void setMessage(Message message) {
