@@ -9,6 +9,7 @@ import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -72,7 +73,8 @@ public class ReceivingRunnable implements Runnable {
         Map.entry(Message.class, o -> handleMessage((Message) o)),
         Map.entry(User.class, o -> handleUser((User) o)),
         Map.entry(Chat.class, o -> handleChat((Chat) o)),
-        Map.entry(Object[].class, o -> handleObjectArray((Object[]) o))
+        Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
+        Map.entry(List.class, o -> handleList((List<User>) o))
     );
 
     private static void handle(Object o) {
@@ -81,6 +83,14 @@ public class ReceivingRunnable implements Runnable {
             throw new HandlerNotFoundException("Handler not found for " + o.getClass()+ " class");
         }
         h.handle(o);
+    }
+
+    private static void handleList(List<User> o) {
+        User askingUser = o.getFirst();
+        List<User> list = users.keySet().stream().toList();
+        list.remove(askingUser);
+        users.get(askingUser).sendUserList(list);
+        //TODO enviar una lista con el resto de usuarios conectados
     }
 
     static void handleMessage(Message message){

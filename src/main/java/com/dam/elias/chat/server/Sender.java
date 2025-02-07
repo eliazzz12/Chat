@@ -1,11 +1,14 @@
 package com.dam.elias.chat.server;
 
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.api.model.exceptions.MessageNotSentException;
+import com.dam.elias.chat.client.api.model.User;
+import com.dam.elias.chat.server.exceptions.ListNotSentException;
+import com.dam.elias.chat.server.exceptions.MessageNotSentException;
 import com.dam.elias.chat.server.exceptions.StatusNotSentException;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 public class Sender {
     private ObjectOutputStream out;
@@ -38,6 +41,14 @@ public class Sender {
             out.flush();
         } catch (IOException e) {
             throw new StatusNotSentException(e);
+        }
+    }
+
+    public void sendUserList(List<User> list) {
+        try{
+            out.writeObject(list);
+        } catch (IOException e){
+            throw new ListNotSentException(e);
         }
     }
 

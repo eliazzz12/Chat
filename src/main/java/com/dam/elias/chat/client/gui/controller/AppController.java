@@ -21,6 +21,7 @@ public class AppController {
     private Map<Chat, List<ChatController>> chatControllers = new HashMap<>();
     private static ChatViewController chatViewController;
     private static ChatsPreviewController previewController;
+    private static OnlineUsersController onlineUsersController;
 
     @FXML
     private VBox vboxPreview;
@@ -71,16 +72,21 @@ public class AppController {
         chatManager.send(nombreChat, text);
     }
 
-    public boolean receive(Message message, Chat chat) {
-        chatControllers.get(chat).forEach(c -> c.receive(message, chatManager.getUser()));
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    public void newChatMenu(MouseEvent mouseEvent) {
+        //Cambiar vista chats-preview por online-users-view
+        //Cambiar vista chat-view por user-info-preview
     }
 
     public void setChatManager(ChatManagerGUI chatManager) {
         this.chatManager = chatManager;
     }
 
-    public void newPrivateChat(User user){
-
+    public void updateOnlineUsers(List<User> list) {
+        try {
+            onlineUsersController.setUsers(list);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

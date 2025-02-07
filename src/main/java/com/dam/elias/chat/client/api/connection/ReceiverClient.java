@@ -5,14 +5,15 @@ import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 import java.util.Map;
 
 public class ReceiverClient implements Runnable {
-    private static ChatManagerGUI chatManagerGUI;
+    private static ChatManagerGUI cm;
     private ObjectInputStream in;
 
-    public ReceiverClient(ChatManagerGUI chatManagerGUI, ObjectInputStream in) {
-        setChatManagerGUI(chatManagerGUI);
+    public ReceiverClient(ChatManagerGUI cm, ObjectInputStream in) {
+        setChatManagerGUI(cm);
         setIn(in);
     }
 
@@ -26,7 +27,7 @@ public class ReceiverClient implements Runnable {
             }
             try {
                 Message message = (Message) in.readObject();
-                chatManagerGUI.receive(message);
+                cm.receive(message);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -41,7 +42,8 @@ public class ReceiverClient implements Runnable {
             Map.entry(Message.class, o -> handleMessage((Message) o)),
             Map.entry(User.class, o -> handleUser((User) o)),
             Map.entry(Chat.class, o -> handleChat((Chat) o)),
-            Map.entry(Object[].class, o -> handleObjectArray((Object[]) o))
+            Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
+            Map.entry(List.class, o -> handleList((List<User>) o))
     );
 
     private static void handle(Object o) {
@@ -52,8 +54,12 @@ public class ReceiverClient implements Runnable {
         h.handle(o);
     }
 
+    private static void handleList(List<User> list) {
+        cm.updateUserList(list);
+    }
+
     static void handleMessage(Message message){
-        chatManagerGUI.receive(message);
+        cm.receive(message);
     }
 
     static void handleUser(User userToUpdate){
@@ -82,10 +88,10 @@ public class ReceiverClient implements Runnable {
     }
 
     private void setChatManagerGUI(ChatManagerGUI chatManagerGUI_) {
-        if(chatManagerGUI == null) {
+        if(cm == null) {
             throw new IllegalArgumentException("chatManagerGUI cannot be null null");
         }
-        this.chatManagerGUI = chatManagerGUI_;
+        this.cm = chatManagerGUI_;
     }
 
     private void setIn(ObjectInputStream in) {
