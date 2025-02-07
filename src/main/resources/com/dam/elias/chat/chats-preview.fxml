@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -14,21 +13,19 @@
          <children>
             <Label fx:id="label_chat_preview_title" text="Conversaciones">
                <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" top="10.0" />
+                  <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Label>
             <HBox fx:id="hb_preview_top" alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="searchNameInput" />
-      <!--            <TextField fx:id="tf_busqueda" promptText="Buscar" />-->
-                  <Button fx:id="newChatButton" mnemonicParsing="false" onAction="#nuevoChat" text="Nuevo Chat" />
+                  <TextField fx:id="searchNameInput" onKeyTyped="#searchChat" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <ScrollPane prefHeight="520.0" prefWidth="300.0">
+      <ScrollPane prefHeight="445.0" prefWidth="300.0">
          <content>
-            <VBox fx:id="vb_chats_info" maxHeight="-Infinity" prefHeight="520.0" prefWidth="284.0" />
+            <VBox fx:id="vb_chats_info" maxHeight="-Infinity" prefHeight="445.0" prefWidth="284.0" />
          </content>
       </ScrollPane>
    </children>
