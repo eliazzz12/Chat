@@ -1,15 +1,15 @@
 package com.dam.elias.chat.client.api.connection;
 
 import com.dam.elias.chat.client.api.model.User;
-import com.dam.elias.chat.client.gui.controllers.LoginController;
+import com.dam.elias.chat.client.gui.controller.LoginController;
 import javafx.application.Application;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 public class LoginManagerGUI extends Connection {
     private static LoginManagerGUI instance;
     private LoginController controller;
+    private User user;
 
     private LoginManagerGUI(Application.Parameters param, LoginController controller) throws IOException {
         setup(param);
@@ -31,7 +31,8 @@ public class LoginManagerGUI extends Connection {
 
     public boolean login(String username) throws IOException {
         System.out.println("Iniciando sesión..."+ username);
-        out.writeObject(new User(username));
+        setUser(createUser(username));
+        out.writeObject(user);
         System.out.println("esperando confirmación");
         boolean result = in.readBoolean();
         System.out.println("Es usuario válido= "+result);
@@ -44,5 +45,21 @@ public class LoginManagerGUI extends Connection {
             throw new IllegalArgumentException("Login controller cannot be null");
         }
         this.controller = controller;
+    }
+
+    public User createUser(String username){
+        User newUser = new User(username);
+        return newUser;
+    }
+
+    public void setUser(User user) {
+        if(user == null){
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

@@ -1,9 +1,9 @@
-package com.dam.elias.chat.client.gui.controllers;
+package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.connection.LoginManagerGUI;
 import com.dam.elias.chat.client.api.model.ChatManagerGUI;
-import javafx.application.Platform;
+import com.dam.elias.chat.client.api.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +25,7 @@ public class LoginController {
     private Label availableLabel;
     private static final String userNameNotAvailableText = "Username not available";
     private boolean connected;
+    private User user;
 
     private void launchApp() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-view.fxml"));
@@ -50,6 +51,7 @@ public class LoginController {
             }
             String username = this.usernameInput.getText();
             success = loginManager.login(username);
+            user = loginManager.getUser();
         } catch (IOException e) {
             availableLabel.setText("Login not available at this time");
         }
