@@ -1,5 +1,8 @@
 package com.dam.elias.chat.client.api.model;
 
+import com.dam.elias.chat.client.gui.controller.ChatInfoController;
+import com.dam.elias.chat.client.gui.controller.ChatViewController;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -21,16 +24,16 @@ public interface ChatApi {
 
     /**
      * Creates a new PrivateChat. The other user iniciated this chat
-     * @param privateChat the new PrivateChat
+     * @param message the first message in this chat
      */
-    void newPrivateChat(PrivateChat privateChat);
+    void newPrivateChat(Message message);
 
     /**
      * Tells to the AppController that a new PrivateChat has been created
      * @param user the user the new PrivateChat is with
      * @return a new PrivateChat
      */
-    PrivateChat newPrivateChat(User user);
+    void newPrivateChat(User user);
 
     /**
      * Tells to the AppController that a new GroupChat has been created
@@ -39,19 +42,9 @@ public interface ChatApi {
      */
     GroupChat newGroupChat(List<User> users);
 
-    /**
-     * Adds a new GroupChat this user has been added to
-     * @param groupChat the new GroupChat
-     */
-    void newGroupChat(GroupChat groupChat);
-
-
-    /**
-     * Gets the last message from a chat
-     * @param chat the chat to retrieve from
-     * @return the last message sent in the chat
-     */
-    Message getLastMessage(Chat chat);
+    ChatViewController getChatViewController(Chat chat);
+    ChatInfoController getChatInfoController(Chat chat);
+    List<Chat> getChatsMatching(String text);
 
     /**
      * Checks whether a message has been sent to the server
@@ -76,4 +69,10 @@ public interface ChatApi {
      * @return a Map with the group users' and true if the message was received by the client, false otherwise
      */
     public Map<User, Boolean> messageReceivedStatus(Message message, GroupChat chat);
+
+    void openChat(Chat chat);
+
+    void askForOnlineUsers();
+
+    void updateUserList(List<User> list);
 }

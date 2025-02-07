@@ -1,21 +1,18 @@
-package com.dam.elias.chat.client.gui.controllers;
+package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.model.Chat;
-import com.dam.elias.chat.client.api.model.ChatManagerGUI;
-import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.client.gui.GuiComponent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AppController extends GuiComponent {
     private static ChatViewController chatViewController;
@@ -48,6 +45,15 @@ public class AppController extends GuiComponent {
         }
     }
 
+    public void newPrivateChat(Chat chat){
+        try {
+            previewController.addChat(chat);
+        } catch (IOException e) {
+            //TODO gestionar
+            throw new RuntimeException(e);
+        }
+    }
+
     private void initializeChatView(){
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-view.fxml"));
         try {
@@ -69,7 +75,7 @@ public class AppController extends GuiComponent {
     }
 
     public void send(String nombreChat, String text) {
-        chatManager.send(nombreChat, text);
+        cm.send(nombreChat, text);
     }
 
 
@@ -78,8 +84,8 @@ public class AppController extends GuiComponent {
         //Cambiar vista chat-view por user-info-preview
     }
 
-    public void setChatManager(ChatManagerGUI chatManager) {
-        this.chatManager = chatManager;
+    public void openChat(Chat chat) {
+        chatViewController.setChat(chat);
     }
 
     public void updateOnlineUsers(List<User> list) {

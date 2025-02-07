@@ -2,19 +2,18 @@ package com.dam.elias.chat.client.api.model;
 
 import com.dam.elias.chat.client.api.connection.Connection;
 import com.dam.elias.chat.client.api.connection.ReceiverClient;
+import com.dam.elias.chat.client.api.connection.SendList;
 import com.dam.elias.chat.client.api.connection.SendMessage;
 import com.dam.elias.chat.client.api.model.exceptions.ChatManagerGUINotCreatedException;
-import com.dam.elias.chat.client.gui.controllers.AppController;
+import com.dam.elias.chat.client.gui.controller.AppController;
+import com.dam.elias.chat.client.gui.controller.ChatInfoController;
+import com.dam.elias.chat.client.gui.controller.ChatViewController;
 import javafx.application.Application;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class ChatManagerGUI extends Connection implements ChatApi, Initializable  {
@@ -22,27 +21,29 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
     private AppController controller;
     private User user;
     private Map<String, Chat> chats = new HashMap<>();
+    private Map<Chat, ChatViewController> chatViewControllers = new HashMap<>();
+    private Map<Chat, ChatInfoController> chatInfoControllers = new HashMap<>();
 
-    private ChatManagerGUI(Application.Parameters param, AppController controller) throws IOException {
+    private ChatManagerGUI(Application.Parameters param, AppController controller, User user) throws IOException {
         setup(param);
         setController(controller);
+        setUser(user);
         connect();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("initializing");
         createReceiver();
     }
 
-    public static ChatManagerGUI getInstance(Application.Parameters param, AppController controller) throws IOException {
+    public static ChatManagerGUI getInstance(Application.Parameters param, AppController controller, User user) throws IOException {
         ChatManagerGUI result = instance;
         if (result != null) {
             return result;
         }
         synchronized(ChatManagerGUI.class) {
             if (instance == null) {
-                instance = new ChatManagerGUI(param, controller);
+                instance = new ChatManagerGUI(param, controller, user);
             }
             return instance;
         }
@@ -66,7 +67,7 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
     public void send(String chatName, String text) {
         Chat chat = chats.get(chatName);
         Message message = new Message(user, chat, text);
-        SendMessage sendMessage = new SendMessage(out, chat, message);
+        SendMessage sendMessage = new SendMessage(out, message);
         new Thread(sendMessage).start();
     }
 
@@ -76,46 +77,31 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
     @Override
     public void receive(Message message) {
         Chat chat = message.getChat();
-        boolean isPrivate = chat.isPrivate();
-
         if(!chats.containsKey(chat.getName())) {
-            if (isPrivate) {
-                newPrivateChat((PrivateChat) chat);
-            } else {
-                newGroupChat((GroupChat) chat);
-            }
+            newPrivateChat(message);
         }
-        controller.receive(message, chat);
+        chatInfoControllers.get(chat).receive(message);
+        chatViewControllers.get(chat).receive(message);
     }
 
     private boolean existsChat(String name){
         return chats.containsKey(name);
     }
 
-    /**
-     * Creates a new PrivateChat. The other user iniciated this chat
-     *
-     * @param privateChat the new PrivateChat
-     */
     @Override
-    public void newPrivateChat(PrivateChat privateChat) {
-        addChat(privateChat);
-        //TODO informar al controlador
+    public void newPrivateChat(Message message) {
+        PrivateChat chat = new PrivateChat(this.user, message.getSender());
+        addChat(chat);
+        controller.newPrivateChat(chat);
     }
 
-    /**
-     * Tells to the AppController that a new PrivateChat has been created
-     *
-     * @param user the user the new PrivateChat is with
-     */
     @Override
-    public PrivateChat newPrivateChat(User user) {
-        //TODO informar al controlador
-        if(!existsChat(user.getUsername())) {
-            controller.newPrivateChat(user);
-        }
-        return null;
+    public void newPrivateChat(User user) {
+        PrivateChat chat = new PrivateChat(this.user, user);
+        addChat(chat);
+        controller.newPrivateChat(chat);
     }
+
 
     /**
      * Tells to the AppController that a new GroupChat has been created
@@ -130,28 +116,6 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
     }
 
     /**
-     * Adds a new GroupChat this user has been added to
-     *
-     * @param groupChat the new GroupChat
-     */
-    @Override
-    public void newGroupChat(GroupChat groupChat) {
-        addChat(groupChat);
-        //TODO informar al controlador
-    }
-
-    /**
-     * Gets the last message from a chat
-     *
-     * @param chat the chat to retrieve from
-     * @return the last message sent in the chat
-     */
-    @Override
-    public Message getLastMessage(Chat chat) {
-        return null;
-    }
-
-    /**
      * Checks whether a message has been sent to the server
      *
      * @param message the message to check
@@ -161,7 +125,6 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
     @Override
     public boolean messageSentStatus(Message message, Chat chat) {
         throw new UnsupportedOperationException("Not supported yet.");
-
     }
 
     /**
@@ -188,32 +151,38 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void openChat(Chat chat) {
+        controller.openChat(chat);
+    }
+
+    @Override
+    public void askForOnlineUsers() {
+        List<User> list = new ArrayList<>();
+        list.add(user);
+        SendList thread = new SendList(out, list);
+        new Thread(thread).start();
+    }
+
+    @Override
+    public void updateUserList(List<User> list){
+        controller.updateOnlineUsers(list);
+    }
+
     private void addChat(Chat chat) {
         String name;
         if(chat.isPrivate()) {
-
+            name = ((PrivateChat) chat).getOtherUser(user).getUsername();
+        } else {
+            name = chat.getName();
         }
-        chats.put(chat.getName(), chat);
+        chats.put(name, chat);
     }
 
     public boolean doesUserExist(String username) throws IOException {
         Object[] array = {user, User.class, username};
         out.writeObject(array);
         return in.readBoolean();
-    }
-
-    private void setAddress(InetAddress address) {
-        if(address == null) {
-            throw new IllegalArgumentException("address cannot be null");
-        }
-        this.address = address;
-    }
-
-    private void setPort(int port) {
-        if(port < 0 || port > 65535) {
-            throw new IllegalArgumentException("invalid port (" + port + ")");
-        }
-        this.port = port;
     }
 
     private void setController(AppController controller) {
@@ -225,5 +194,29 @@ public class ChatManagerGUI extends Connection implements ChatApi, Initializable
 
     public User getUser() {
         return user;
+    }
+
+    public ChatViewController getChatViewController(Chat chat) {
+        return chatViewControllers.get(chat);
+    }
+    public ChatInfoController getChatInfoController(Chat chat) {
+        return chatInfoControllers.get(chat);
+    }
+
+    public List<Chat> getChatsMatching(String text) {
+        List<Chat> list = new ArrayList<>();
+        chats.forEach((k,v) -> {
+            if(k.contains(text)) {
+                list.add(v);
+            }
+        });
+        return list;
+    }
+
+    public void setUser(User user) {
+        if(user == null) {
+            throw new IllegalArgumentException("user cannot be null");
+        }
+        this.user = user;
     }
 }

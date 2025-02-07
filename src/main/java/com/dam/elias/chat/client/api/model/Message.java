@@ -3,7 +3,7 @@ package com.dam.elias.chat.client.api.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Message implements Serializable {
+public class Message implements Serializable, Comparable<Message> {
     private String id;
     private int counter = 1;
     private User sender;
@@ -70,5 +70,11 @@ public class Message implements Serializable {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+
+    @Override
+    public int compareTo(Message o) {
+        return this.getTimestamp().compareTo(o.getTimestamp());
     }
 }

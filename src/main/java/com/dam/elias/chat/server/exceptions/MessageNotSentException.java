@@ -1,4 +1,4 @@
-package com.dam.elias.chat.client.api.model.exceptions;
+package com.dam.elias.chat.server.exceptions;
 
 public class MessageNotSentException extends RuntimeException {
     public MessageNotSentException(String message) {

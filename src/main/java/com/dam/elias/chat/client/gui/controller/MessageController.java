@@ -1,4 +1,4 @@
-package com.dam.elias.chat.client.gui.controllers;
+package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
@@ -15,14 +15,15 @@ public class MessageController {
     @FXML
     private Label text;
 
-    public void setMessage(Message message, User user) {
-        profilePicture = message.getSender().getProfilePicture();
+    public void setMessage(Message message) {
+        User sender = message.getSender();
+        profilePicture = sender.getProfilePicture();
         text.setText(message.getText());
-        setStyle(message, user);
+        setStyle(message, sender);
     }
 
-    private void setStyle(Message message, User user) {
-        if(message.getSender().equals(user)) {
+    private void setStyle(Message message, User sender) {
+        if(message.getSender().equals(sender)) {
             //Poner imagen a la derecha
         } else {
             //Poner imagen a la izquierda

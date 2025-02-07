@@ -1,7 +1,7 @@
 package com.dam.elias.chat;
 
 import com.dam.elias.chat.client.api.connection.LoginManagerGUI;
-import com.dam.elias.chat.client.gui.controllers.LoginController;
+import com.dam.elias.chat.client.gui.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

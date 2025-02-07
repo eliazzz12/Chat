@@ -1,16 +1,16 @@
-package com.dam.elias.chat.client.gui.controllers;
+package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.GuiComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 
 public class ChatInfoController extends GuiComponent implements ChatController {
     //Eventos: hacer click, cambiarUltimoMensaje(texto y hora)
     private Chat chat;
-    private User user;
     @FXML
     private Label nombre;
     @FXML
@@ -18,15 +18,16 @@ public class ChatInfoController extends GuiComponent implements ChatController {
     @FXML
     private Label ultimoMensaje;
     @FXML
-    private  Label contadorNoLeidos;
+    private Label contadorNoLeidos;
 
-    public ChatInfoController(User user, Chat chat) {
+    public void setup(Chat chat) {
+        setChat(chat);
         setNombreChat(chat.getName());
-        setLabel_num_mensajesNoLeidos(0);
+        setLabel_num_mensajesNoLeidos(chat.getUnreadMessages());
     }
 
     @Override
-    public void receive(Message message, User user) {
+    public void receive(Message message) {
         setLastMessage(message);
     }
 
@@ -56,4 +57,14 @@ public class ChatInfoController extends GuiComponent implements ChatController {
         contadorNoLeidos.setText(String.valueOf(num_mensajesChat));
     }
 
+    public void setChat(Chat chat) {
+        if(chat == null) {
+            throw new IllegalArgumentException("Chat cannot be null");
+        }
+        this.chat = chat;
+    }
+
+    public void openChat(MouseEvent mouseEvent) {
+        cm.openChat(chat);
+    }
 }

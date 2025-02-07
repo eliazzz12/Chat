@@ -1,6 +1,7 @@
 package com.dam.elias.chat.server;
 
 import com.dam.elias.chat.client.api.model.*;
+import com.dam.elias.chat.client.api.model.exceptions.UserNotInThisChatException;
 
 import java.util.List;
 import java.util.Map;
@@ -23,11 +24,17 @@ public class MessageSenderRunnable implements Runnable {
                 Chat chat = message.getChat();
                 if(chat.isPrivate()) {
                     PrivateChat privateChat = (PrivateChat) chat;
-                    User receiver = privateChat.getOtherUser();
-                    users.get(receiver).sendMessage(message);
+                    User receiver = null;
+                    try {
+                        receiver = privateChat.getOtherUser(message.getSender());
+                        users.get(receiver).sendMessage(message);
+                    } catch (UserNotInThisChatException _) {
+                        //TODO hacer algo?
+                    }
                 } else {
                     GroupChat groupChat = (GroupChat) chat;
                     List<User> userList = groupChat.getUsers();
+                    userList.remove(message.getSender());
                     userList.forEach(receiver -> users.get(receiver).sendMessage(message));
                 }
             } catch (InterruptedException e) {
