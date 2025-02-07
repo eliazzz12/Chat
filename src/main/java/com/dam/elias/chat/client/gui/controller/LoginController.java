@@ -34,7 +34,7 @@ public class LoginController {
             AppController controller = fxmlLoader.getController();
             ChatManagerGUI cm = ChatManagerGUI.getInstance(loginManager.getParameters(), controller, user);
             controller.setChatManagerGUI(cm);
-            controller.initialize(usernameInput.getText());
+            controller.setup();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

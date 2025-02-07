@@ -27,9 +27,10 @@ public class AppController extends GuiComponent {
     private Label userNameLabel;
 
 
-    public void initialize(String username) {
+    public void setup() {
         initializeChatPreview();
         initializeChatView();
+        String username = cm.getUser().getUsername();
         userNameLabel.setText("User: "+username);
     }
 
