@@ -2,12 +2,12 @@ package com.dam.elias.chat.client.gui.controllers;
 
 import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.api.model.User;
+import com.dam.elias.chat.client.gui.GuiComponent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 
-public class ChatInfoController implements ChatController {
+public class ChatInfoController extends GuiComponent implements ChatController {
     //Eventos: hacer click, cambiarUltimoMensaje(texto y hora)
     private Chat chat;
     private User user;

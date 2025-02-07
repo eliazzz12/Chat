@@ -3,7 +3,7 @@ package com.dam.elias.chat.client.gui.controllers;
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.api.model.User;
+import com.dam.elias.chat.client.gui.GuiComponent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,8 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class ChatViewController implements Initializable, ChatController {
-    private AppController rootController;
+public class ChatViewController extends GuiComponent implements ChatController {
     private Chat chat;
     private User otherUser;
     @FXML

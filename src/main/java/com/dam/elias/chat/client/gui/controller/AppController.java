@@ -5,6 +5,7 @@ import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.ChatManagerGUI;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
+import com.dam.elias.chat.client.gui.GuiComponent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,9 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AppController {
-    private ChatManagerGUI chatManager;
-    private Map<Chat, List<ChatController>> chatControllers = new HashMap<>();
+public class AppController extends GuiComponent {
     private static ChatViewController chatViewController;
     private static ChatsPreviewController previewController;
     private static OnlineUsersController onlineUsersController;
@@ -42,6 +41,7 @@ public class AppController {
         try {
             Parent item = fxmlLoader.load();
             previewController = fxmlLoader.getController();
+            previewController.setChatManagerGUI(cm);
             vboxPreview.getChildren().add(item);
         } catch (IOException e) {
             throw new RuntimeException(e);
