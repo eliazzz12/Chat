@@ -10,9 +10,7 @@ import java.util.Objects;
 public abstract class Chat implements Serializable, Comparable<Chat> {
     protected String name;
     private List<Message> messageList;
-    private int unreadMessages;
-    private ChatViewController viewController;
-    private ChatInfoController infoController;
+    private int unreadIndex;
 
     public Chat(String name) {
         setName(name);
@@ -27,7 +25,7 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
     }
 
     public int getUnreadMessages(){
-        return unreadMessages;
+        return unreadIndex;
     }
 
     private void setName(String name) {
@@ -39,14 +37,6 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
 
     public String getName() {
         return name;
-    }
-
-    public ChatViewController getViewController() {
-        return viewController;
-    }
-
-    public ChatInfoController getInfoController() {
-        return infoController;
     }
 
     public List<Message> getMessageList() {
