@@ -2,7 +2,9 @@ package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.model.Chat;
-import com.dam.elias.chat.client.gui.GuiComponent;
+import com.dam.elias.chat.client.gui.mediator.ChatsPreviewMediator;
+import com.dam.elias.chat.client.gui.mediator.Mediator;
+import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,18 +19,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ChatsPreviewController extends GuiComponent {
+public class ChatsPreviewController implements ViewController {
+    ChatsPreviewMediator mediator;
     List<Chat> searchedChats;
     Set<Chat> chats = new HashSet<>();
-
     @FXML
     TextField searchNameInput;
     @FXML
     VBox vb_chats_info;
 
+    //haHechoClick()
+    /*
+        enviar al mediador
+     */
+
     @FXML
     private void searchChat(ActionEvent event) {
-        searchedChats = cm.getChatsMatching(searchNameInput.getText());
+        searchedChats = mediator.getChatsMatching(searchNameInput.getText());
         List<Node> children = vb_chats_info.getChildren();
         try {
             drawChats(searchedChats);
@@ -54,9 +61,22 @@ public class ChatsPreviewController extends GuiComponent {
         vb_chats_info.getChildren().add(0, item);
     }
 
-    public void addChat(Chat chat) throws IOException {
+    //TODO al mediador
+    public void addChat(Chat chat) {
         chats.add(chat);
-        drawChats(chats.stream().toList());
+        try {
+            drawChats(chats.stream().toList());
+        } catch (IOException e) {
+            //TODO gestionar
+            throw new RuntimeException(e);
+        }
     }
 
+    @Override
+    public void setMediator(Mediator mediator) {
+        if(mediator == null){
+            throw new IllegalArgumentException("mediator cannot be null");
+        }
+        this.mediator = (ChatsPreviewMediator) mediator;
+    }
 }

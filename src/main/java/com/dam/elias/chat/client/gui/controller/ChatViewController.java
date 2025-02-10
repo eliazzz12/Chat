@@ -3,7 +3,9 @@ package com.dam.elias.chat.client.gui.controller;
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.gui.GuiComponent;
+import com.dam.elias.chat.client.gui.mediator.ChatViewMediator;
+import com.dam.elias.chat.client.gui.mediator.Mediator;
+import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class ChatViewController extends GuiComponent implements ChatController {
-    private Chat chat;
+public class ChatViewController implements ViewController {
+    private ChatViewMediator mediator;
     @FXML
     private Label nombreChat;
     @FXML
@@ -28,10 +30,11 @@ public class ChatViewController extends GuiComponent implements ChatController {
     @FXML
     private Button botonEnviar;
 
-    private void enviarMensaje() {
-        String mensaje = inputMensaje.getText();
-        String nombre = nombreChat.getText();
-        cm.send(nombre, mensaje);
+    @FXML
+    private void sendMessage() {
+        String name = nombreChat.getText();
+        String message = inputMensaje.getText();
+        mediator.sendMessage(name, message);
     }
 
     //Añadir mensaje, enviar mensaje, borrar mensaje
@@ -54,5 +57,10 @@ public class ChatViewController extends GuiComponent implements ChatController {
         List<Message> messages = chat.getMessageList();
         Collections.sort(messages);
         messages.forEach(this::receive);
+    }
+
+    @Override
+    public void setMediator(Mediator mediator) {
+        this.mediator = (ChatViewMediator) mediator;
     }
 }
