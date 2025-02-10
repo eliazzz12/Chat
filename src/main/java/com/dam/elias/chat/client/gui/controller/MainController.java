@@ -112,11 +112,11 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     }
 
     public void receiveNewMessage(Message message) {
-        ChatContext context = contexts.get(message.getChat().getName());
+        Chat chat = message.getChat();
+        ChatContext context = contexts.get(chat.getName());
         if(context == null) {
-            //TODO completar constructor
-//            context = new ChatContext(message.getChat(), );
-            context.setState(new ClosedState(context));
+            newChat(chat);
+            context = contexts.get(chat.getName());
         }
         context.getState().receiveNewMessage(message);
     }
