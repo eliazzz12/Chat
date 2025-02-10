@@ -1,16 +1,19 @@
 package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.client.api.model.Chat;
-import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.gui.GuiComponent;
+import com.dam.elias.chat.client.gui.mediator.ChatInfoMediator;
+import com.dam.elias.chat.client.gui.mediator.Mediator;
+import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 
-public class ChatInfoController extends GuiComponent implements ChatController {
+public class ChatInfoController implements ViewController {
     //Eventos: hacer click, cambiarUltimoMensaje(texto y hora)
-    private Chat chat;
+    private ChatInfoMediator mediator;
+
     @FXML
     private Label nombre;
     @FXML
@@ -21,50 +24,32 @@ public class ChatInfoController extends GuiComponent implements ChatController {
     private Label contadorNoLeidos;
 
     public void setup(Chat chat) {
-        setChat(chat);
         setNombreChat(chat.getName());
         setLabel_num_mensajesNoLeidos(chat.getUnreadMessages());
-    }
-
-    @Override
-    public void receive(Message message) {
-        setLastMessage(message);
-    }
-
-    public void goToChat(){
-        // cambiar la vista de chat por la de este chat
-    }
-
-    public void setLastMessage(Message message){
-        setLabel_ultimo_mensajeChat(message.getText());
-        setLabel_hora_o_fechaChat(message.getTimestamp().toString());
-        setLabel_num_mensajesNoLeidos(message.getChat().getUnreadMessages());
     }
 
     private void setNombreChat(String chatName) {
         nombre.setText(chatName);
     }
 
-    private void setLabel_hora_o_fechaChat(String hora_fechaChat) {
+    public void setLabel_hora_o_fechaChat(String hora_fechaChat) {
         horaFecha.setText(hora_fechaChat);
     }
 
-    private void setLabel_ultimo_mensajeChat(String ultimo_mensajeChat) {
+    public void setLabel_ultimo_mensajeChat(String ultimo_mensajeChat) {
         ultimoMensaje.setText(ultimo_mensajeChat);
     }
 
-    private void setLabel_num_mensajesNoLeidos(int num_mensajesChat) {
+    public void setLabel_num_mensajesNoLeidos(int num_mensajesChat) {
         contadorNoLeidos.setText(String.valueOf(num_mensajesChat));
     }
 
-    public void setChat(Chat chat) {
-        if(chat == null) {
-            throw new IllegalArgumentException("Chat cannot be null");
-        }
-        this.chat = chat;
+    public void openChat(MouseEvent mouseEvent) {
+        mediator.openChat(nombre.getText());
     }
 
-    public void openChat(MouseEvent mouseEvent) {
-        cm.openChat(chat);
+    @Override
+    public void setMediator(Mediator mediator) {
+        this.mediator = (ChatInfoMediator) mediator;
     }
 }

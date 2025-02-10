@@ -2,23 +2,30 @@ package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.App;
 import com.dam.elias.chat.client.api.model.User;
-import com.dam.elias.chat.client.gui.GuiComponent;
+import com.dam.elias.chat.client.gui.mediator.Mediator;
+import com.dam.elias.chat.client.gui.mediator.OnlineUsersMediator;
+import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OnlineUsersController extends GuiComponent {
+public class OnlineUsersController implements ViewController {
+    OnlineUsersMediator mediator;
     Map<User, UserInfoController> userInfoControllers = new HashMap<>();
+
     @FXML
     private VBox vb_users;
+    @FXML
+    private TextField inputGroupName;
 
     public void setUsers(List<User> users) throws IOException {
         if(users == null) {
@@ -39,15 +46,20 @@ public class OnlineUsersController extends GuiComponent {
         UserInfoController controller = fxmlLoader.getController();
         controller.setUserInfo(user);
         userInfoControllers.put(user, controller);
-        vb_users.getChildren().add(0, item);
+        vb_users.getChildren().addFirst(item);
     }
 
-    public void nuevoChat(MouseEvent mouseEvent) {
+    public void newChat(MouseEvent mouseEvent) {
         List<User> users = getSelectedUsers();
         if(users.size() == 1) {
-            cm.newPrivateChat(users.getFirst());
+            mediator.newPrivateChat(users.getFirst());
         } else if(users.size() > 1) {
-            cm.newGroupChat(users);
+            if(inputGroupName.getText().isEmpty()) {
+                inputGroupName.requestFocus();
+            } else {
+                String name = inputGroupName.getText();
+                mediator.newGroupChat(name, users);
+            }
         }
     }
 
@@ -59,5 +71,10 @@ public class OnlineUsersController extends GuiComponent {
             }
         });
         return list;
+    }
+
+    @Override
+    public void setMediator(Mediator mediator) {
+        this.mediator = (OnlineUsersMediator) mediator;
     }
 }
