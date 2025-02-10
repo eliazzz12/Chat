@@ -1,7 +1,9 @@
 package com.dam.elias.chat.client.api.connection;
 
 import com.dam.elias.chat.client.api.model.*;
+import com.dam.elias.chat.client.gui.controller.MainController;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
+import com.sun.tools.javac.Main;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ReceiverClient implements Runnable {
-    private static ChatManagerGUI cm;
+    private static MainController controller;
     private ObjectInputStream in;
 
-    public ReceiverClient(ChatManagerGUI cm, ObjectInputStream in) {
-        setChatManagerGUI(cm);
+    public ReceiverClient(MainController controller, ObjectInputStream in) {
+        setController(controller);
         setIn(in);
     }
 
@@ -22,12 +24,6 @@ public class ReceiverClient implements Runnable {
         while (!Thread.interrupted()) {
             try {
                 handle(in.readObject());
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                Message message = (Message) in.readObject();
-                cm.receive(message);
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -55,17 +51,26 @@ public class ReceiverClient implements Runnable {
     }
 
     private static void handleList(List<User> list) {
-        cm.updateUserList(list);
+        controller.updateOnlineUsers(list);
     }
 
     static void handleMessage(Message message){
-        cm.receive(message);
+        controller.receiveNewMessage(message);
     }
 
     static void handleUser(User userToUpdate){
         throw new UnsupportedOperationException("Not implemented yet");
         //TODO updateUser(): actualizar datos en todos los clientes que tengan conversación con el user
     }
+    /*
+        Método del cliente para saber si existe o no un usuario
+        estaría en el MainController
+     */
+//    public boolean doesUserExist(String username) throws IOException {
+//        Object[] array = {user, User.class, username};
+//        out.writeObject(array);
+//        return in.readBoolean();
+//    }
 
     static void handleObjectArray(Object[] array){
         throw new UnsupportedOperationException("Not implemented yet");
@@ -87,11 +92,11 @@ public class ReceiverClient implements Runnable {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    private void setChatManagerGUI(ChatManagerGUI chatManagerGUI_) {
-        if(cm == null) {
-            throw new IllegalArgumentException("chatManagerGUI cannot be null null");
+    public void setController(MainController controller) {
+        if(controller == null) {
+            throw new IllegalArgumentException("controller must not be null");
         }
-        this.cm = chatManagerGUI_;
+        this.controller = controller;
     }
 
     private void setIn(ObjectInputStream in) {

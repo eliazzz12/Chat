@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginController {
-    private LoginManagerGUI loginManager;
     private Stage stage;
     @FXML
     private TextField usernameInput;
@@ -23,54 +22,71 @@ public class LoginController {
     private Button loginButton;
     @FXML
     private Label availableLabel;
-    private static final String userNameNotAvailableText = "Username not available";
-    private boolean connected;
-    private User user;
 
     private void launchApp() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
-        try {
-            AppController controller = fxmlLoader.getController();
-            ChatManagerGUI cm = ChatManagerGUI.getInstance(loginManager.getParameters(), controller, user);
-            controller.setChatManagerGUI(cm);
-            controller.setup();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        MainController controller = fxmlLoader.getController();
+        controller.setUser(user);
+        controller.setConnection(connection);
+        controller.setup();
+        new Thread(new ReceiverClient(controller, connection.getIn())).start();
         stage.setScene(scene);
-//        stage.show();
     }
 
     public void attemptLogin() throws IOException {
         boolean success = false;
         try {
-            if(!connected){
-                loginManager.connect();
-            }
             String username = this.usernameInput.getText();
-            success = loginManager.login(username);
-            user = loginManager.getUser();
+            success = login(username);
         } catch (IOException e) {
             availableLabel.setText("Login not available at this time");
         }
         if(success){
-            System.out.println("Lanzando app");
             launchApp();
         } else {
             availableLabel.setText(userNameNotAvailableText);
         }
     }
 
-    public void setLoginManager(LoginManagerGUI loginManager) {
-        if(loginManager == null){
-            throw new IllegalArgumentException("Login manager cannot be null");
-        }
-        this.loginManager = loginManager;
+    public boolean login(String username) throws IOException {
+        System.out.println("Iniciando sesión..."+ username);
+        setUser(createUser(username));
+        connection.getOut().writeObject(user);
+        System.out.println("esperando confirmación");
+        boolean result = connection.getIn().readBoolean();
+        System.out.println("Es usuario válido= "+result);
+        return result;
     }
 
-    public void setup() {
-        stage = (Stage) usernameInput.getParent().getScene().getWindow();
+    public User createUser(String username){
+        User newUser = new User(username);
+        return newUser;
+    }
+
+    public void setUser(User user) {
+        if(user == null){
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setStage(Stage stage) {
+        if(stage == null){
+            throw new IllegalArgumentException("Stage cannot be null");
+        }
+        this.stage = stage;
+    }
+
+    public void setConnection(Connection connection) {
+        if(connection == null){
+            throw new IllegalArgumentException("Connection cannot be null");
+        }
+        System.out.println("Connection en LoginController ok");
+        this.connection = connection;
     }
 }

@@ -1,6 +1,6 @@
 package com.dam.elias.chat;
 
-import com.dam.elias.chat.client.api.connection.LoginManagerGUI;
+import com.dam.elias.chat.client.api.connection.Connection;
 import com.dam.elias.chat.client.gui.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +17,9 @@ public class App extends Application {
         LoginController controller;
         try {
             controller = fxmlLoader.getController();
-            LoginManagerGUI lm = LoginManagerGUI.getInstance(getParameters(), controller);
-            controller.setLoginManager(lm);
-            controller.setup();
+            controller.setStage(stage);
+            Connection connection = new Connection(getParameters());
+            controller.setConnection(connection);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
