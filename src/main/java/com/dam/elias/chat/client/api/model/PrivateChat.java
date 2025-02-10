@@ -7,8 +7,8 @@ import java.util.Objects;
 public class PrivateChat extends Chat {
     private User firstUser, secondUser;
 
-    public PrivateChat(User localUser, User otherUser) {
-        super(otherUser.getUsername());
+    public PrivateChat(User firstUser, User secondUser) {
+        super(secondUser.getUsername());
         setUser(firstUser);
         setUser(secondUser);
     }
