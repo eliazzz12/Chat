@@ -1,7 +1,6 @@
 package com.dam.elias.chat.client.api.connection;
 
 import javafx.application.Application;
-import javafx.fxml.Initializable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,16 +11,14 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class Connection {
+public class Connection {
     private Socket server;
     protected InetAddress address;
     protected int port;
     protected ObjectOutputStream out;
     protected ObjectInputStream in;
-    private Application.Parameters parameters;
 
-    protected void setup(Application.Parameters params) throws UnknownHostException {
-        setParameters(params);
+    public Connection(Application.Parameters params) throws UnknownHostException {
         List<String> parameterList = params.getRaw();
         Iterator<String> iterator = parameterList.iterator();
         while (iterator.hasNext()) {
@@ -71,14 +68,11 @@ public abstract class Connection {
         this.port = port;
     }
 
-    public void setParameters(Application.Parameters parameters) {
-        if(parameters == null) {
-            throw new IllegalArgumentException("parameters cannot be null");
-        }
-        this.parameters = parameters;
+    public ObjectInputStream getIn() {
+        return in;
     }
 
-    public Application.Parameters getParameters() {
-        return parameters;
+    public ObjectOutputStream getOut() {
+        return out;
     }
 }

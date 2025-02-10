@@ -1,8 +1,8 @@
 package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.App;
-import com.dam.elias.chat.client.api.connection.LoginManagerGUI;
-import com.dam.elias.chat.client.api.model.ChatManagerGUI;
+import com.dam.elias.chat.client.api.connection.Connection;
+import com.dam.elias.chat.client.api.connection.ReceiverClient;
 import com.dam.elias.chat.client.api.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +16,10 @@ import java.io.IOException;
 
 public class LoginController {
     private Stage stage;
+    private Connection connection;
+    private User user;
+
+    private static final String userNameNotAvailableText = "Username not available";
     @FXML
     private TextField usernameInput;
     @FXML
@@ -36,6 +40,7 @@ public class LoginController {
 
     public void attemptLogin() throws IOException {
         boolean success = false;
+        connection.connect();
         try {
             String username = this.usernameInput.getText();
             success = login(username);
