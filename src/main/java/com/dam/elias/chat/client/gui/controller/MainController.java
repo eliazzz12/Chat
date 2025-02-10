@@ -1,0 +1,217 @@
+package com.dam.elias.chat.client.gui.controller;
+
+import com.dam.elias.chat.App;
+import com.dam.elias.chat.client.api.connection.Connection;
+import com.dam.elias.chat.client.api.connection.SendList;
+import com.dam.elias.chat.client.api.connection.SendMessage;
+import com.dam.elias.chat.client.api.model.*;
+import com.dam.elias.chat.client.gui.ChatContext;
+import com.dam.elias.chat.client.gui.mediator.*;
+import com.dam.elias.chat.client.gui.states.ClosedState;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MainController implements ChatViewMediator, Mediator, ChatsPreviewMediator,
+        OnlineUsersMediator, ChatInfoMediator {
+    private User user;
+    private Connection connection;
+    private static ChatViewController chatViewController;
+    private static ChatsPreviewController previewController;
+    private static OnlineUsersController onlineUsersController;
+    private Map<String, ChatContext> contexts = new HashMap<>();
+
+    @FXML
+    private VBox vboxPreview;
+    @FXML
+    private VBox vboxChatScreen;
+    @FXML
+    private Label userNameLabel;
+
+ //TODO setup de Connection
+
+
+    public void setConnection(Connection connection) {
+        if(connection == null) {
+            throw new IllegalArgumentException("Connection cannot be null");
+        }
+        this.connection = connection;
+    }
+
+    public void setup() {
+        initializeChatPreview();
+        initializeChatView();
+        String username = user.getUsername();
+        userNameLabel.setText("User: "+username);
+    }
+
+    private void initializeChatPreview(){
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chats-preview.fxml"));
+        try {
+            Parent item = fxmlLoader.load();
+            previewController = fxmlLoader.getController();
+            vboxPreview.getChildren().add(item);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void initializeChatView(){
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-view.fxml"));
+        try {
+            Parent item = fxmlLoader.load();
+            chatViewController = fxmlLoader.getController();
+            vboxChatScreen.getChildren().add(item);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void newPrivateChat(User user){
+        PrivateChat chat = new PrivateChat(this.user, user);
+        newChat(chat);
+    }
+
+    @Override
+    public void newGroupChat(String name, List<User> users){
+        GroupChat chat = new GroupChat(name, users);
+        newChat(chat);
+    }
+
+    public void newChat(Chat chat){
+        //TODO generar el contexto de la conversación (chat, Parent, estado, controladores (2))
+        try {
+            //FIXME Necesita de los dos items?
+            FXMLLoader fxmlLoaderInfo = new FXMLLoader(App.class.getResource("chat-info.fxml"));
+            Parent infoItem = fxmlLoaderInfo.load();
+            FXMLLoader fxmlLoaderChat = new FXMLLoader(App.class.getResource("chat-view.fxml"));
+            Parent chatViewItem = fxmlLoaderChat.load();
+
+            ChatInfoController infoController = fxmlLoaderInfo.getController();
+            ChatViewController viewController = fxmlLoaderChat.getController();
+            ChatContext context = new ChatContext(chat, infoItem, chatViewItem, infoController, viewController);
+            context.setState(new ClosedState(context));
+
+            contexts.put(chat.getName(), context);
+
+            previewController.addChat(chat);
+        } catch (IOException e) {
+            //TODO gestionar
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void receiveNewMessage(Message message) {
+        ChatContext context = contexts.get(message.getChat().getName());
+        if(context == null) {
+            //TODO completar constructor
+//            context = new ChatContext(message.getChat(), );
+            context.setState(new ClosedState(context));
+        }
+        context.getState().receiveNewMessage(message);
+    }
+
+
+    public void newChatMenu(MouseEvent mouseEvent) {
+        //Cambiar vista chats-preview por online-users-view
+        setOnlineUsersView();
+        //Cambiar vista chat-view por user-info-preview
+        setOnlineUsersInfoPreview();
+    }
+
+    public void noConnection(Exception e) {
+        //TODO implementar que ocurre cuando no puede conectarse
+        System.out.println("No connection: " + e.getMessage());
+    }
+
+    public void sendError(Exception e) {
+        //TODO implementar que ocurre cuando no se puede enviar
+    }
+
+    public void sendMessage(String chatName, String text) {
+        ChatContext context = contexts.get(chatName);
+        Chat chat = context.getChat();
+        Message message = new Message(user, chat, text);
+        SendMessage sendMessage = new SendMessage(connection.getOut(), message);
+        new Thread(sendMessage).start();
+    }
+
+    private void setOnlineUsersView() {
+        vboxPreview.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("online-users-view.fxml"));
+        try {
+            Parent item = fxmlLoader.load();
+            previewController = fxmlLoader.getController();
+            vboxPreview.getChildren().add(item);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setOnlineUsersInfoPreview() {
+        vboxChatScreen.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("user-info-preview.fxml"));
+        try {
+            Parent item = fxmlLoader.load();
+            onlineUsersController = fxmlLoader.getController();
+            vboxChatScreen.getChildren().add(item);
+        } catch (IOException e) {
+            // TODO gestionar
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void openChat(String chatName) {
+        ChatContext context = contexts.get(chatName);
+        context.getState().openChat(chatName);
+    }
+
+    public void askForOnlineUsers() {
+        List<User> list = new ArrayList<>();
+        list.add(user);
+        SendList thread = new SendList(connection.getOut(), list);
+        new Thread(thread).start();
+    }
+
+    public void updateOnlineUsers(List<User> list) {
+        try {
+            onlineUsersController.setUsers(list);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Searches chat names.
+     *
+     * @param text the search text
+     * @return a list with Chats containing the search in their name
+     */
+    @Override
+    public List<Chat> getChatsMatching(String text) {
+        List<Chat> list = new ArrayList<>();
+        contexts.forEach((k,v) -> {
+            if(k.contains(text)) {
+                list.add(v.getChat());
+            }
+        });
+        return list;
+    }
+
+    public void setUser(User user) {
+        if(user == null){
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        this.user = user;
+    }
+}
