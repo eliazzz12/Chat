@@ -12,7 +12,7 @@ public class Message implements Serializable, Comparable<Message> {
     private LocalDateTime timestamp;
     private boolean sent;
 
-    protected Message(User sender, Chat chat, String text) {
+    public Message(User sender, Chat chat, String text) {
         setSender(sender);
         setChat(chat);
         setText(text);

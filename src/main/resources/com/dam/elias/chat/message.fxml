@@ -3,14 +3,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.MessageController">
+
+<VBox xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.MessageController">
    <children>
-      <ImageView fx:id="profilePicture" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <Label fx:id="username" text="Label" />
+      <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0">
          <children>
-            <Label fx:id="text" text="Label" />
+            <ImageView fx:id="profilePicture" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox fx:id="textBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="text" text="Label" />
+               </children>
+            </HBox>
          </children>
       </HBox>
    </children>
-</HBox>
+</VBox>
