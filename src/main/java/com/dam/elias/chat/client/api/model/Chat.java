@@ -1,8 +1,5 @@
 package com.dam.elias.chat.client.api.model;
 
-import com.dam.elias.chat.client.gui.controller.ChatInfoController;
-import com.dam.elias.chat.client.gui.controller.ChatViewController;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +17,15 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
     }
 
     public void addMessage(Message message) {
-        messageList.add(message);
-        System.out.println("Chat: Message added: " + message.getText());
+//        if(!messageList.contains(message)) {
+            messageList.add(message);
+//            unreadIndex++;
+            System.out.println("Chat: Message added: " + message.getText());
+//        }
+    }
+
+    public void setAllRead(){
+        unreadIndex = 0;
     }
 
     public boolean isPrivate(){
