@@ -5,7 +5,6 @@ import com.dam.elias.chat.client.gui.mediator.ChatInfoMediator;
 import com.dam.elias.chat.client.gui.mediator.Mediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
@@ -50,6 +49,9 @@ public class ChatInfoController implements ViewController {
 
     @Override
     public void setMediator(Mediator mediator) {
+        if(mediator == null){
+            throw new IllegalArgumentException("mediator can not be null");
+        }
         this.mediator = (ChatInfoMediator) mediator;
     }
 }

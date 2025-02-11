@@ -55,12 +55,17 @@ public class ChatViewController implements ViewController {
     public void setChat(Chat chat) {
         nombreChat.setText(chat.getName());
         List<Message> messages = chat.getMessageList();
-        Collections.sort(messages);
-        messages.forEach(this::receive);
+        if(messages != null) {
+            Collections.sort(messages);
+            messages.forEach(this::receive);
+        }
     }
 
     @Override
     public void setMediator(Mediator mediator) {
+        if(mediator == null) {
+            throw new IllegalArgumentException("mediator cannot be null");
+        }
         this.mediator = (ChatViewMediator) mediator;
     }
 }

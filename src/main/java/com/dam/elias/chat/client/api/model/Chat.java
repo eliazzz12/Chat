@@ -45,7 +45,11 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
 
     @Override
     public int compareTo(Chat o) {
-        return this.getLastMessage().getTimestamp().compareTo(o.getLastMessage().getTimestamp());
+        try {
+            return this.getLastMessage().getTimestamp().compareTo(o.getLastMessage().getTimestamp());
+        } catch (NullPointerException _) {
+            return 0;
+        }
     }
 
     @Override

@@ -56,6 +56,7 @@ public class ChatsPreviewController implements ViewController {
         Parent item = fxmlLoader.load();
         ChatInfoController controller = fxmlLoader.getController();
         controller.setup(chat);
+        controller.setMediator((Mediator) mediator);
         vb_chats_info.getChildren().add(0, item);
     }
 

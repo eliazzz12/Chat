@@ -61,6 +61,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         try {
             chatPreview = fxmlLoader.load();
             previewController = fxmlLoader.getController();
+            previewController.setMediator(this);
             vboxPreview.getChildren().add(chatPreview);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -72,6 +73,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         try {
             chatView = fxmlLoader.load();
             chatViewController = fxmlLoader.getController();
+            chatViewController.setMediator(this);
             vboxChatScreen.getChildren().add(chatView);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -199,10 +201,12 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
 
     public void sendMessage(String chatName, String text) {
         ChatContext context = contexts.get(chatName);
-        Chat chat = context.getChat();
-        Message message = new Message(user, chat, text);
-        SendMessage sendMessage = new SendMessage(connection.getOut(), message);
-        new Thread(sendMessage).start();
+        if(context != null) {
+            Chat chat = context.getChat();
+            Message message = new Message(user, chat, text);
+            SendMessage sendMessage = new SendMessage(connection.getOut(), message);
+            new Thread(sendMessage).start();
+        }
     }
 
     /**
