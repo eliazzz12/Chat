@@ -7,6 +7,7 @@ import com.sun.tools.javac.Main;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class ReceiverClient implements Runnable {
             Map.entry(User.class, o -> handleUser((User) o)),
             Map.entry(Chat.class, o -> handleChat((Chat) o)),
             Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
-            Map.entry(List.class, o -> handleList((List<User>) o))
+            Map.entry(ArrayList.class, o -> handleList((ArrayList<User>) o))
     );
 
     private static void handle(Object o) {

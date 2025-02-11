@@ -6,9 +6,8 @@ import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
 
-import java.io.EOFException;
-import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,7 +73,7 @@ public class ReceivingRunnable implements Runnable {
         Map.entry(User.class, o -> handleUser((User) o)),
         Map.entry(Chat.class, o -> handleChat((Chat) o)),
         Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
-        Map.entry(List.class, o -> handleList((List<User>) o))
+        Map.entry(ArrayList.class, o -> handleList((ArrayList<User>) o))
     );
 
     private static void handle(Object o) {
@@ -87,10 +86,10 @@ public class ReceivingRunnable implements Runnable {
 
     private static void handleList(List<User> o) {
         User askingUser = o.getFirst();
-        List<User> list = users.keySet().stream().toList();
+        List<User> list = new ArrayList<>();
+        list.addAll(users.keySet());
         list.remove(askingUser);
         users.get(askingUser).sendUserList(list);
-        //TODO enviar una lista con el resto de usuarios conectados
     }
 
     static void handleMessage(Message message){

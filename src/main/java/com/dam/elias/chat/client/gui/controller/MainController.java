@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MainController implements ChatViewMediator, Mediator, ChatsPreviewMediator,
         OnlineUsersMediator, ChatInfoMediator {
@@ -31,6 +32,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     private static ChatsPreviewController previewController;
     private static OnlineUsersController onlineUsersController;
     private Map<String, ChatContext> contexts = new HashMap<>();
+    private List<User> onlineUsers;
 
     @FXML
     private VBox vboxPreview;
@@ -104,15 +106,25 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
             ChatInfoController infoController = fxmlLoaderInfo.getController();
             ChatViewController viewController = fxmlLoaderChat.getController();
             ChatContext context = new ChatContext(chat, infoItem, chatViewItem, infoController, viewController);
+//            ChatContext context = new ChatContext(chat, chatViewItem, viewController);
             context.setState(new ClosedState(context));
 
             contexts.put(chat.getName(), context);
 
-            previewController.addChat(chat);
+            previewController.drawChats(getChatList());
         } catch (IOException e) {
             //TODO gestionar
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Chat> getChatList() {
+        List<Chat> list = new ArrayList<>();
+        contexts.values().forEach(chatContext -> {
+            list.add(chatContext.getChat());
+        });
+
+        return list;
     }
 
     public void receiveNewMessage(Message message) {
@@ -127,6 +139,14 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
 
 
     public void newChatMenu(MouseEvent mouseEvent) {
+        askForOnlineUsers();
+        while(onlineUsers == null) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         //Cambiar vista chats-preview por online-users-view
         setOnlineUsersView();
         //Cambiar vista chat-view por user-info-preview
@@ -154,25 +174,20 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         }
     }
 
+    public void openChat(String chatName) {
+        ChatContext context = contexts.get(chatName);
+        context.setChatViewController(chatViewController);
+        context.getState().openChat(chatName);
+    }
+
     private void setOnlineUsersInfoPreview() {
         vboxChatScreen.getChildren().clear();
-        List<User> list = new ArrayList<>();
-        list.add(new User("Ramón"));
-        list.add(new User("Scott"));
-        list.add(new User("Olga"));
-        list.add(new User("María"));
-        list.add(new User("Iván"));
         try {
-            onlineUsersController.setUsers(list);
+            onlineUsersController.setUsers(onlineUsers);
         } catch (IOException e) {
             // TODO gestionar
             throw new RuntimeException(e);
         }
-    }
-
-    public void openChat(String chatName) {
-        ChatContext context = contexts.get(chatName);
-        context.getState().openChat(chatName);
     }
 
     public void askForOnlineUsers() {
@@ -183,11 +198,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     }
 
     public void updateOnlineUsers(List<User> list) {
-        try {
-            onlineUsersController.setUsers(list);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        onlineUsers = list;
     }
 
     public void noConnection(Exception e) {

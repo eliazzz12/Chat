@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class ChatsPreviewController implements ViewController {
     ChatsPreviewMediator mediator;
     List<Chat> searchedChats;
-    Set<Chat> chats = new HashSet<>();
     @FXML
     TextField searchNameInput;
     @FXML
@@ -44,7 +43,7 @@ public class ChatsPreviewController implements ViewController {
         }
     }
 
-    private void drawChats(List<Chat> chats) throws IOException {
+    public void drawChats(List<Chat> chats) throws IOException {
         vb_chats_info.getChildren().clear();
         Collections.sort(chats);
         for(Chat chat : chats) {
@@ -56,22 +55,9 @@ public class ChatsPreviewController implements ViewController {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-info.fxml"));
         Parent item = fxmlLoader.load();
         ChatInfoController controller = fxmlLoader.getController();
-        controller.setup(chat);
         controller.setMediator((Mediator) mediator);
+        controller.setup(chat);
         vb_chats_info.getChildren().add(0, item);
-    }
-
-    //TODO al mediador
-    public void addChat(Chat chat) {
-        chats.add(chat);
-        //Así se obtiene una Lista mutable. Usando .stream().toList() la lista es inmutable y no sirve
-        ArrayList<Chat> list = (ArrayList<Chat>) chats.stream().collect(Collectors.toList());
-        try {
-            drawChats(list);
-        } catch (IOException e) {
-            //TODO gestionar
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
