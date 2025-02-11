@@ -45,6 +45,7 @@ public class ChatsPreviewController implements ViewController {
     }
 
     private void drawChats(List<Chat> chats) throws IOException {
+        vb_chats_info.getChildren().clear();
         Collections.sort(chats);
         for(Chat chat : chats) {
             drawChat(chat);
