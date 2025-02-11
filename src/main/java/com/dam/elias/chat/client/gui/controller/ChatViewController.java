@@ -5,23 +5,25 @@ import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.mediator.ChatViewMediator;
 import com.dam.elias.chat.client.gui.mediator.Mediator;
-import com.dam.elias.chat.client.gui.mediator.MessageMediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
-public class ChatViewController implements ViewController {
+public class ChatViewController implements ViewController, Initializable {
     private ChatViewMediator mediator;
     @FXML
     private Label nombreChat;
@@ -29,8 +31,15 @@ public class ChatViewController implements ViewController {
     private VBox vboxMensajes;
     @FXML
     private TextField inputMensaje;
-    @FXML
-    private Button botonEnviar;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        inputMensaje.setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                sendMessage();
+            }
+        });
+    }
 
     @FXML
     private void sendMessage() {
@@ -38,6 +47,7 @@ public class ChatViewController implements ViewController {
         String name = nombreChat.getText();
         String message = inputMensaje.getText();
         mediator.sendMessage(name, message);
+        inputMensaje.setText("");
     }
 
     //Añadir mensaje, enviar mensaje, borrar mensaje
