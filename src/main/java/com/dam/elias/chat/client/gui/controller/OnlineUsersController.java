@@ -8,10 +8,10 @@ import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,12 +53,14 @@ public class OnlineUsersController implements ViewController {
         List<User> users = getSelectedUsers();
         if(users.size() == 1) {
             mediator.newPrivateChat(users.getFirst());
+            mediator.setChatView();
         } else if(users.size() > 1) {
             if(inputGroupName.getText().isEmpty()) {
                 inputGroupName.requestFocus();
             } else {
                 String name = inputGroupName.getText();
                 mediator.newGroupChat(name, users);
+                mediator.setChatView();
             }
         }
     }
@@ -75,6 +77,9 @@ public class OnlineUsersController implements ViewController {
 
     @Override
     public void setMediator(Mediator mediator) {
+        if(mediator == null){
+            throw new IllegalArgumentException("Mediator can not be null");
+        }
         this.mediator = (OnlineUsersMediator) mediator;
     }
 }

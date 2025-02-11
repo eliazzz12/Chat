@@ -14,10 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChatsPreviewController implements ViewController {
     ChatsPreviewMediator mediator;
@@ -64,8 +62,10 @@ public class ChatsPreviewController implements ViewController {
     //TODO al mediador
     public void addChat(Chat chat) {
         chats.add(chat);
+        //Así se obtiene una Lista mutable. Usando .stream().toList() la lista es inmutable y no sirve
+        ArrayList<Chat> list = (ArrayList<Chat>) chats.stream().collect(Collectors.toList());
         try {
-            drawChats(chats.stream().toList());
+            drawChats(list);
         } catch (IOException e) {
             //TODO gestionar
             throw new RuntimeException(e);

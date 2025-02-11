@@ -3,6 +3,8 @@ module com.dam.elias.chat {
     requires javafx.fxml;
     requires java.desktop;
     requires jdk.httpserver;
+    requires java.naming;
+    requires jdk.compiler;
 
 
     opens com.dam.elias.chat to javafx.fxml;

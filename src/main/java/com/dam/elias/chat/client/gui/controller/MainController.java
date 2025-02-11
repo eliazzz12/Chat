@@ -25,6 +25,8 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         OnlineUsersMediator, ChatInfoMediator {
     private User user;
     private Connection connection;
+    private static Parent chatPreview;
+    private static Parent chatView;
     private static ChatViewController chatViewController;
     private static ChatsPreviewController previewController;
     private static OnlineUsersController onlineUsersController;
@@ -57,9 +59,9 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     private void initializeChatPreview(){
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chats-preview.fxml"));
         try {
-            Parent item = fxmlLoader.load();
+            chatPreview = fxmlLoader.load();
             previewController = fxmlLoader.getController();
-            vboxPreview.getChildren().add(item);
+            vboxPreview.getChildren().add(chatPreview);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -68,9 +70,9 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     private void initializeChatView(){
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-view.fxml"));
         try {
-            Parent item = fxmlLoader.load();
+            chatView = fxmlLoader.load();
             chatViewController = fxmlLoader.getController();
-            vboxChatScreen.getChildren().add(item);
+            vboxChatScreen.getChildren().add(chatView);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -129,21 +131,12 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         setOnlineUsersInfoPreview();
     }
 
-    public void noConnection(Exception e) {
-        //TODO implementar que ocurre cuando no puede conectarse
-        System.out.println("No connection: " + e.getMessage());
-    }
-
-    public void sendError(Exception e) {
-        //TODO implementar que ocurre cuando no se puede enviar
-    }
-
-    public void sendMessage(String chatName, String text) {
-        ChatContext context = contexts.get(chatName);
-        Chat chat = context.getChat();
-        Message message = new Message(user, chat, text);
-        SendMessage sendMessage = new SendMessage(connection.getOut(), message);
-        new Thread(sendMessage).start();
+    @Override
+    public void setChatView() {
+        vboxPreview.getChildren().clear();
+        vboxChatScreen.getChildren().clear();
+        vboxPreview.getChildren().add(chatPreview);
+        vboxChatScreen.getChildren().add(chatView);
     }
 
     private void setOnlineUsersView() {
@@ -151,7 +144,8 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("online-users-view.fxml"));
         try {
             Parent item = fxmlLoader.load();
-            previewController = fxmlLoader.getController();
+            onlineUsersController = fxmlLoader.getController();
+            onlineUsersController.setMediator(this);
             vboxPreview.getChildren().add(item);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -160,11 +154,14 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
 
     private void setOnlineUsersInfoPreview() {
         vboxChatScreen.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("user-info-preview.fxml"));
+        List<User> list = new ArrayList<>();
+        list.add(new User("Ramón"));
+        list.add(new User("Scott"));
+        list.add(new User("Olga"));
+        list.add(new User("María"));
+        list.add(new User("Iván"));
         try {
-            Parent item = fxmlLoader.load();
-            onlineUsersController = fxmlLoader.getController();
-            vboxChatScreen.getChildren().add(item);
+            onlineUsersController.setUsers(list);
         } catch (IOException e) {
             // TODO gestionar
             throw new RuntimeException(e);
@@ -189,6 +186,23 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void noConnection(Exception e) {
+        //TODO implementar que ocurre cuando no puede conectarse
+        System.out.println("No connection: " + e.getMessage());
+    }
+
+    public void sendError(Exception e) {
+        //TODO implementar que ocurre cuando no se puede enviar
+    }
+
+    public void sendMessage(String chatName, String text) {
+        ChatContext context = contexts.get(chatName);
+        Chat chat = context.getChat();
+        Message message = new Message(user, chat, text);
+        SendMessage sendMessage = new SendMessage(connection.getOut(), message);
+        new Thread(sendMessage).start();
     }
 
     /**

@@ -9,4 +9,5 @@ public interface OnlineUsersMediator {
 
     void newGroupChat(String name, List<User> users);
     void askForOnlineUsers();
+    void setChatView();
 }
