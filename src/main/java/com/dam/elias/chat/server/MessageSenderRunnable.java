@@ -30,6 +30,11 @@ public class MessageSenderRunnable implements Runnable {
                         users.get(receiver).sendMessage(message);
                     } catch (UserNotInThisChatException _) {
                         //TODO hacer algo?
+                    } catch (NullPointerException _){
+                        //TODO notificar no existe el usuario
+                        /*
+                        No existiría el usuario si estaba online y se ha desconectado
+                         */
                     }
                 } else {
                     GroupChat groupChat = (GroupChat) chat;
