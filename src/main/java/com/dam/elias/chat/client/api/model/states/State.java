@@ -1,10 +1,7 @@
-package com.dam.elias.chat.client.gui.states;
+package com.dam.elias.chat.client.api.model.states;
 
-import com.dam.elias.chat.client.api.model.Chat;
+import com.dam.elias.chat.client.api.model.ChatContext;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.gui.ChatContext;
-
-import javafx.scene.input.MouseEvent;
 
 public abstract class State {
     ChatContext context;

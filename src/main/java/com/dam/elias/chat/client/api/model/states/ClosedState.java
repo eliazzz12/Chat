@@ -1,12 +1,8 @@
-package com.dam.elias.chat.client.gui.states;
+package com.dam.elias.chat.client.api.model.states;
 
-import com.dam.elias.chat.client.api.model.Chat;
+import com.dam.elias.chat.client.api.model.ChatContext;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.gui.ChatContext;
 import com.dam.elias.chat.client.gui.controller.ChatInfoController;
-import com.dam.elias.chat.client.gui.controller.ChatViewController;
-
-import javafx.scene.input.MouseEvent;
 
 public class ClosedState extends State {
 
@@ -16,6 +12,7 @@ public class ClosedState extends State {
 
     @Override
     public void receiveNewMessage(Message message) {
+//        context.getChat().addMessage(message);
         updateInfo(message);
     }
 
@@ -24,6 +21,7 @@ public class ClosedState extends State {
         context.getChatViewController().setChat(context.getChat());
         State newState = new OpenedState(context);
         context.setState(newState);
+//        context.getChat().setAllRead();
         System.out.println("ClosedState: ahora estoy abierto");
     }
 
