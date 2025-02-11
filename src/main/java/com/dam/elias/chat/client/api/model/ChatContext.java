@@ -1,5 +1,6 @@
 package com.dam.elias.chat.client.api.model;
 
+import com.dam.elias.chat.client.api.model.states.State;
 import com.dam.elias.chat.client.gui.controller.ChatInfoController;
 import com.dam.elias.chat.client.gui.controller.ChatViewController;
 import javafx.scene.Parent;
