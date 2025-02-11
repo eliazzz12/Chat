@@ -33,12 +33,9 @@ public class ReceivingRunnable implements Runnable {
         while(userIsOnline) {
             try {
                 handle(in.readObject());
-            } catch (EOFException ex) {
-                System.out.println("removing user "+user.getUsername());
+            } catch (Exception _) {
                 users.remove(user);
                 userIsOnline = false;
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
     }
