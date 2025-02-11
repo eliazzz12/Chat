@@ -4,16 +4,24 @@ import com.dam.elias.chat.client.gui.controller.ChatInfoController;
 import com.dam.elias.chat.client.gui.controller.ChatViewController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class Chat implements Serializable, Comparable<Chat> {
     protected String name;
-    private List<Message> messageList;
+    private final List<Message> messageList;
     private int unreadIndex;
 
     public Chat(String name) {
         setName(name);
+        messageList = new ArrayList<>();
+        unreadIndex = 0;
+    }
+
+    public void addMessage(Message message) {
+        messageList.add(message);
+        System.out.println("Chat: Message added: " + message.getText());
     }
 
     public boolean isPrivate(){
@@ -28,7 +36,7 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
         return unreadIndex;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         if(name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
         }

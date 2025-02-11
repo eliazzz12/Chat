@@ -1,6 +1,7 @@
 package com.dam.elias.chat.client.gui;
 
 import com.dam.elias.chat.client.api.model.Chat;
+import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.controller.ChatInfoController;
 import com.dam.elias.chat.client.gui.controller.ChatViewController;
 import com.dam.elias.chat.client.gui.states.State;
@@ -23,6 +24,11 @@ public class ChatContext {
         setChatViewController(chatViewController);
     }
 
+    public ChatContext(Chat chat, ChatInfoController chatInfoController, ChatViewController chatViewController) {
+        this.chatInfoController = chatInfoController;
+        this.chatViewController = chatViewController;
+        this.chat = chat;
+    }
 
     public void setChat(Chat chat) {
         this.chat = chat;

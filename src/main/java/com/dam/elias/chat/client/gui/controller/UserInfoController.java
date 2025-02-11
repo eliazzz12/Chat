@@ -10,8 +10,6 @@ public class UserInfoController {
     @FXML
     private Label username;
     @FXML
-    private ImageView picture;
-    @FXML
     private CheckBox checkbox;
 
     public void setUserInfo(User user) {
@@ -19,7 +17,6 @@ public class UserInfoController {
             throw new IllegalArgumentException("User cannot be null");
         }
         username.setText(user.getUsername());
-        picture.setImage(user.getProfilePicture());
     }
 
     public boolean isChecked() {

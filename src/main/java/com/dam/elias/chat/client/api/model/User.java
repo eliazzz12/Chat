@@ -17,10 +17,6 @@ public class User implements Serializable {
      * Mapea cada chat con su id.
      */
     private Map<Integer, Chat> chats;
-    /**
-     * Imágen de perfil del usuario
-     */
-    private Image profilePicture;
 
     public User(String username) {
         setUsername(username);
@@ -39,20 +35,12 @@ public class User implements Serializable {
         this.chats = chats;
     }
 
-    public void setProfilePicture(Image profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public Map<Integer, Chat> getChats() {
         return chats;
-    }
-
-    public Image getProfilePicture() {
-        return profilePicture;
     }
 
      @Override

@@ -1,10 +1,14 @@
 package com.dam.elias.chat.client.api.model;
 
+import javafx.fxml.Initializable;
+
 import java.io.Serializable;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 public class Message implements Serializable, Comparable<Message> {
-    private String id;
+    private String id = "";
     private int counter = 1;
     private User sender;
     private Chat chat;
@@ -23,7 +27,11 @@ public class Message implements Serializable, Comparable<Message> {
 
     private void setId() {
         //TODO que hacer con el id?
-        id = sender.getUsername()+counter++;
+        id += sender.getUsername()+counter++;
+    }
+
+    public void addToChat(){
+        chat.addMessage(this);
     }
 
     protected void setSender(User sender) {

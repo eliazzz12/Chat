@@ -17,12 +17,14 @@ public class ClosedState extends State {
     @Override
     public void receiveNewMessage(Message message) {
         updateInfo(message);
-        updateView(message);
     }
 
     @Override
     public void openChat(String chatName) {
         context.getChatViewController().setChat(context.getChat());
+        State newState = new OpenedState(context);
+        context.setState(newState);
+        System.out.println("ClosedState: ahora estoy abierto");
     }
 
     private void updateInfo(Message message) {
@@ -30,10 +32,5 @@ public class ClosedState extends State {
         infoController.setLabel_ultimo_mensajeChat(message.getText());
         infoController.setLabel_hora_o_fechaChat(message.getTimestamp().toString());
         infoController.setLabel_num_mensajesNoLeidos(message.getChat().getUnreadMessages());
-    }
-
-    private void updateView(Message message) {
-        ChatViewController chatController = context.getChatViewController();
-        chatController.receive(message);
     }
 }

@@ -20,6 +20,7 @@ public class SendMessage implements Runnable {
         int tryCount = 0;
         boolean sent = false;
         do{
+            System.out.println("SendMessage: enviando mensaje "+message.getText());
             try {
                 out.writeObject(message);
                 out.flush();

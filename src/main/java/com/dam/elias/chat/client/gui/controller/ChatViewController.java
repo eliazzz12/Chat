@@ -5,7 +5,9 @@ import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.mediator.ChatViewMediator;
 import com.dam.elias.chat.client.gui.mediator.Mediator;
+import com.dam.elias.chat.client.gui.mediator.MessageMediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +34,7 @@ public class ChatViewController implements ViewController {
 
     @FXML
     private void sendMessage() {
+        System.out.println("ChatViewController: enviando mensaje "+inputMensaje.getText());
         String name = nombreChat.getText();
         String message = inputMensaje.getText();
         mediator.sendMessage(name, message);
@@ -43,8 +46,13 @@ public class ChatViewController implements ViewController {
         try {
             Parent item = fxmlLoader.load();
             MessageController messageController = fxmlLoader.getController();
+            messageController.setMediator((Mediator)mediator);
             messageController.setMessage(message);
-            vboxMensajes.getChildren().add(item);
+            //Platform
+            Platform.runLater(() -> {
+                System.out.println("ChatViewController: añadiendo mensaje "+message.getText());
+                vboxMensajes.getChildren().add(item);
+            });
         } catch (IOException e) {
             //TODO gestionar
             throw new RuntimeException(e);
@@ -53,10 +61,13 @@ public class ChatViewController implements ViewController {
 
 
     public void setChat(Chat chat) {
+        vboxMensajes.getChildren().clear();
         nombreChat.setText(chat.getName());
         List<Message> messages = chat.getMessageList();
         if(messages != null) {
             Collections.sort(messages);
+            System.out.println("ChatViewController: añadiendo TODOS los mensajes");
+            System.out.println("ChatViewController: nume mensajes = "+messages.size());
             messages.forEach(this::receive);
         }
     }

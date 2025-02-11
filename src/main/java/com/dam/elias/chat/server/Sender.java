@@ -24,6 +24,7 @@ public class Sender {
         } catch (IOException e) {
             throw new MessageNotSentException(e);
         }
+        System.out.println("SERVER: mensaje enviado: "+message.getText());
     }
 
     public void sendLoginStatus(boolean status) {

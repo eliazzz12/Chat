@@ -90,6 +90,7 @@ public class ReceivingRunnable implements Runnable {
     }
 
     static void handleMessage(Message message){
+        System.out.println("SERVER: mensaje recibido: "+message.getText());
         messageQueue.add(message);
     }
 

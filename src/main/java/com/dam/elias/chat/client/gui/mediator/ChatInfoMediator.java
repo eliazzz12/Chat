@@ -5,4 +5,5 @@ import javafx.scene.input.MouseEvent;
 public interface ChatInfoMediator {
 
     void openChat(String chatName);
+    void closeChats();
 }

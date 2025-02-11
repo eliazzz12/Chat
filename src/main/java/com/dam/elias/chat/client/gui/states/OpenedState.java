@@ -28,6 +28,7 @@ public class OpenedState extends State {
 
     private void updateChatView(Message message) {
         ChatViewController chatController = context.getChatViewController();
+        System.out.println("OpenedState: añadiendo 1 mensaje");
         chatController.receive(message);
     }
 

@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+import java.util.NoSuchElementException;
+
 
 public class ChatInfoController implements ViewController {
     //Eventos: hacer click, cambiarUltimoMensaje(texto y hora)
@@ -24,6 +26,11 @@ public class ChatInfoController implements ViewController {
 
     public void setup(Chat chat) {
         setNombreChat(chat.getName());
+        try {
+            setLabel_ultimo_mensajeChat(chat.getLastMessage().getText());
+        } catch (NoSuchElementException _) {
+            setLabel_ultimo_mensajeChat("");
+        }
         setLabel_num_mensajesNoLeidos(chat.getUnreadMessages());
     }
 
@@ -40,7 +47,11 @@ public class ChatInfoController implements ViewController {
     }
 
     public void setLabel_num_mensajesNoLeidos(int num_mensajesChat) {
-        contadorNoLeidos.setText(String.valueOf(num_mensajesChat));
+        if (num_mensajesChat > 0) {
+            contadorNoLeidos.setText(String.valueOf(num_mensajesChat));
+        } else {
+            contadorNoLeidos.setText("");
+        }
     }
 
     public void openChat(MouseEvent mouseEvent) {

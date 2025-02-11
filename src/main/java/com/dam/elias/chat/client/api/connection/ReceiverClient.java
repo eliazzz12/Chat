@@ -4,6 +4,7 @@ import com.dam.elias.chat.client.api.model.*;
 import com.dam.elias.chat.client.gui.controller.MainController;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
 import com.sun.tools.javac.Main;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -56,7 +57,8 @@ public class ReceiverClient implements Runnable {
     }
 
     static void handleMessage(Message message){
-        controller.receiveNewMessage(message);
+        System.out.println("Recibiendo mensaje: " + message.getText());
+            controller.receiveNewMessage(message);
     }
 
     static void handleUser(User userToUpdate){
