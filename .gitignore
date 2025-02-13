@@ -39,3 +39,9 @@ build/
 
 ### Environment ###
 .env
+
+### jar files ###
+*.jar
+
+### notas ###
+/notas/
