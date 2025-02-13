@@ -1,7 +1,0 @@
-cambiar nuevo chat por usuarios online en el nombre del botón
-añadir botón cancelar y actualizar en usuarios online
-funcionalidad grupos (desde la pestaña grupos)
-BUG: no se actualiza el segundo mensaje en el preview
-OpenState no se está habilitando
-manejar intento login con usuario existente
-fecha mensaje en preview y en message.fxml
