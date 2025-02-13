@@ -11,16 +11,10 @@ public class OpenedState extends State {
     }
 
     @Override
-    public void receiveNewMessage(Message message){
+    public void addNewMessage(Message message){
 //        context.getChat().addMessage(message);
-        updateInfoView(message);
+        updateInfo(message);
         updateChatView(message);
-    }
-
-    private void updateInfoView(Message message) {
-        ChatInfoController infoController = context.getChatInfoController();
-        infoController.setLabel_ultimo_mensajeChat(message.getText());
-        infoController.setLabel_hora_o_fechaChat(message.getTimestamp().toString());
     }
 
     private void updateChatView(Message message) {
@@ -29,7 +23,8 @@ public class OpenedState extends State {
         chatController.receive(message);
     }
 
-    public void openChat(String chatName) {
+
+    public void openChat() {
         // Ya está abierto, no hay que hacer nada
     }
 

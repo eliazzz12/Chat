@@ -57,8 +57,8 @@ public class ReceiverClient implements Runnable {
     }
 
     static void handleMessage(Message message){
-        System.out.println("Recibiendo mensaje: " + message.getText());
-            controller.receiveNewMessage(message);
+        System.out.println("ReceiverClient: Recibiendo mensaje= " + message.getText());
+        controller.receiveNewMessage(message);
     }
 
     static void handleUser(User userToUpdate){

@@ -3,6 +3,7 @@ package com.dam.elias.chat.client.api.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public abstract class Chat implements Serializable, Comparable<Chat> {
@@ -17,11 +18,11 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
     }
 
     public void addMessage(Message message) {
-//        if(!messageList.contains(message)) {
+        if(!messageList.contains(message)) {
             messageList.add(message);
-//            unreadIndex++;
             System.out.println("Chat: Message added: " + message.getText());
-//        }
+        }
+//            unreadIndex++;
     }
 
     public void setAllRead(){
@@ -59,7 +60,7 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
     public int compareTo(Chat o) {
         try {
             return this.getLastMessage().getTimestamp().compareTo(o.getLastMessage().getTimestamp());
-        } catch (NullPointerException _) {
+        } catch (NullPointerException | NoSuchElementException _) {
             return 0;
         }
     }

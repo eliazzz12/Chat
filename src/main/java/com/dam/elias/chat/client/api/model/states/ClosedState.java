@@ -4,6 +4,8 @@ import com.dam.elias.chat.client.api.model.ChatContext;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.controller.ChatInfoController;
 
+import java.time.format.DateTimeFormatter;
+
 public class ClosedState extends State {
 
     public ClosedState(ChatContext context) {
@@ -11,24 +13,17 @@ public class ClosedState extends State {
     }
 
     @Override
-    public void receiveNewMessage(Message message) {
-//        context.getChat().addMessage(message);
+    public void addNewMessage(Message message) {
+        System.out.println("ClosedState: añadiendo mensaje = "+message.getText());
         updateInfo(message);
     }
 
     @Override
-    public void openChat(String chatName) {
+    public void openChat() {
         context.getChatViewController().setChat(context.getChat());
-        State newState = new OpenedState(context);
-        context.setState(newState);
+        State openedState = new OpenedState(context);
+        context.setState(openedState);
 //        context.getChat().setAllRead();
         System.out.println("ClosedState: ahora estoy abierto");
-    }
-
-    private void updateInfo(Message message) {
-        ChatInfoController infoController = context.getChatInfoController();
-        infoController.setLabel_ultimo_mensajeChat(message.getText());
-        infoController.setLabel_hora_o_fechaChat(message.getTimestamp().toString());
-        infoController.setLabel_num_mensajesNoLeidos(message.getChat().getUnreadMessages());
     }
 }

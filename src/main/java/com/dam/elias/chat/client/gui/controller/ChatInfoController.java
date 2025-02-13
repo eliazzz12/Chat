@@ -1,6 +1,7 @@
 package com.dam.elias.chat.client.gui.controller;
 
 import com.dam.elias.chat.client.api.model.Chat;
+import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.mediator.ChatInfoMediator;
 import com.dam.elias.chat.client.gui.mediator.Mediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
@@ -27,9 +28,12 @@ public class ChatInfoController implements ViewController {
     public void setup(Chat chat) {
         setNombreChat(chat.getName());
         try {
-            setLabel_ultimo_mensajeChat(chat.getLastMessage().getText());
+            Message lastMessage = chat.getLastMessage();
+            setLabel_ultimo_mensajeChat(lastMessage.getText());
+            setLabel_hora_o_fechaChat(lastMessage.getTimeSent());
         } catch (NoSuchElementException _) {
             setLabel_ultimo_mensajeChat("");
+            setLabel_hora_o_fechaChat("");
         }
         setLabel_num_mensajesNoLeidos(chat.getUnreadMessages());
     }

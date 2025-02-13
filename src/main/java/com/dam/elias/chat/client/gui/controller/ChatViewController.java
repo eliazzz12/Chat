@@ -77,7 +77,7 @@ public class ChatViewController implements ViewController, Initializable {
         if(messages != null) {
             Collections.sort(messages);
             System.out.println("ChatViewController: añadiendo TODOS los mensajes");
-            System.out.println("ChatViewController: nume mensajes = "+messages.size());
+            System.out.println("ChatViewController: num mensajes = "+messages.size());
             messages.forEach(this::receive);
         }
     }

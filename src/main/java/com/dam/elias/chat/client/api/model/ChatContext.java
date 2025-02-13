@@ -13,11 +13,10 @@ public class ChatContext {
     private ChatInfoController chatInfoController;
     private ChatViewController chatViewController;
 
-    public ChatContext(Chat chat, Parent infoItem, Parent chatViewItem,
+    public ChatContext(Chat chat, Parent infoItem,
                        ChatInfoController chatInfoController, ChatViewController chatViewController) {
         setChat(chat);
         setInfoItem(infoItem);
-        setChatViewItem(chatViewItem);
         setChatInfoController(chatInfoController);
         setChatViewController(chatViewController);
     }

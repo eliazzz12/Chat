@@ -34,30 +34,21 @@ public class ChatsPreviewController implements ViewController {
     private void searchChat(ActionEvent event) {
         searchedChats = mediator.getChatsMatching(searchNameInput.getText());
         List<Node> children = vb_chats_info.getChildren();
-        try {
-            drawChats(searchedChats);
+//        try {
+            //TODO convertir searchedChats en List<Parent>
+//            drawChats(searchedChats);
             children.clear();
-        } catch (IOException e) {
+//        } catch (IOException e) {
             //TODO gestionar
-            throw new RuntimeException(e);
-        }
+//            throw new RuntimeException(e);
+//        }
     }
 
-    public void drawChats(List<Chat> chats) throws IOException {
+    public void drawChats(List<Parent> items) throws IOException {
         vb_chats_info.getChildren().clear();
-        Collections.sort(chats);
-        for(Chat chat : chats) {
-            drawChat(chat);
+        for(Parent item : items) {
+            vb_chats_info.getChildren().addFirst(item);
         }
-    }
-
-    private void drawChat(Chat chat) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("chat-info.fxml"));
-        Parent item = fxmlLoader.load();
-        ChatInfoController controller = fxmlLoader.getController();
-        controller.setMediator((Mediator) mediator);
-        controller.setup(chat);
-        vb_chats_info.getChildren().add(0, item);
     }
 
     @Override

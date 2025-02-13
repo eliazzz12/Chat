@@ -5,11 +5,11 @@ import javafx.fxml.Initializable;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Message implements Serializable, Comparable<Message> {
-    private String id = "";
-    private int counter = 1;
     private User sender;
     private Chat chat;
     private String text;
@@ -21,13 +21,7 @@ public class Message implements Serializable, Comparable<Message> {
         setChat(chat);
         setText(text);
         timestamp = LocalDateTime.now();
-        setId();
         sent = false;
-    }
-
-    private void setId() {
-        //TODO que hacer con el id?
-        id += sender.getUsername()+counter++;
     }
 
     public void addToChat(){
@@ -56,10 +50,6 @@ public class Message implements Serializable, Comparable<Message> {
         this.text = text;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public User getSender() {
         return sender;
     }
@@ -76,6 +66,12 @@ public class Message implements Serializable, Comparable<Message> {
         return text;
     }
 
+    public String getTimeSent(){
+        System.out.println("Message: obteniendo la hora");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return timestamp.format(formatter);
+    }
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -84,5 +80,18 @@ public class Message implements Serializable, Comparable<Message> {
     @Override
     public int compareTo(Message o) {
         return this.getTimestamp().compareTo(o.getTimestamp());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(timestamp, message.getTimestamp());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(timestamp);
     }
 }
