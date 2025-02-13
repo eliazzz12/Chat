@@ -1,5 +1,6 @@
 package com.dam.elias.chat.server;
 
+import com.dam.elias.chat.client.api.model.GroupChat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.client.api.model.exceptions.UsernameBeingUsedException;
@@ -9,12 +10,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class ServerMain {
+    private static User USER = new User("SERVER");
+    private static GroupChat ALL = new GroupChat("ALL", new ArrayList<>(List.of(USER)));
     private static final Map<User, Sender> users = new ConcurrentHashMap<>();
     private static BlockingQueue<Message> messages = new LinkedBlockingDeque<>();
 
@@ -54,6 +60,9 @@ public class ServerMain {
             }
             System.out.println("SERVER: isValidUser = " + isValidUser);
             users.get(user).sendLoginStatus(isValidUser);
+            Message welcomeMessage = new Message(USER, ALL, "Welcome to the chat "+user.getUsername()+" :D");
+            ALL.addUser(user);
+            messages.add(welcomeMessage);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -65,8 +74,8 @@ public class ServerMain {
             throw new UsernameBeingUsedException();
         }
         users.put(user, new Sender(out));
-        System.out.println("SERVER: User added "+user.getUsername());
         new Thread(new ReceivingRunnable(user, users, messages, in)).start();
+        System.out.println("SERVER: User added "+user.getUsername());
     }
 
     public static void removeUser(User user) {
