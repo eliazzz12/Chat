@@ -7,7 +7,7 @@ public class GroupChat extends Chat {
 
     public GroupChat(String name, List<User> users) {
         super(name);
-        this.users = users;
+        setUsers(users);
     }
 
     public void setName(String name) {
@@ -15,7 +15,14 @@ public class GroupChat extends Chat {
     }
 
     public void setUsers(List<User> users) {
+        if(users == null) {
+            throw new IllegalArgumentException("Users cannot be null");
+        }
         this.users = users;
+        System.out.println("GROUPCHAT USERS:");
+        for(User user : users) {
+            System.out.println(user.getUsername());
+        }
     }
 
     public String getName() {

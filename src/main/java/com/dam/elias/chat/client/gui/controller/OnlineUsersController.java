@@ -58,6 +58,7 @@ public class OnlineUsersController implements ViewController {
             if(inputGroupName.getText().isEmpty()) {
                 inputGroupName.requestFocus();
             } else {
+                users.add(mediator.getUser());
                 String name = inputGroupName.getText();
                 mediator.newGroupChat(name, users);
                 mediator.setChatView();

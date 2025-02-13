@@ -88,11 +88,6 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         newChat(chat);
     }
 
-    @Override
-    public void newGroupChat(GroupChat chat){
-        newChat(chat);
-    }
-
     public void newChat(Chat chat){
         System.out.println("MainController: creando newChat");
         try {
@@ -129,17 +124,28 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
 
     public void receiveNewMessage(Message message) {
         System.out.println("MainController: recibiendo mensaje");
+        String chatName= message.getChat().getName();
         String senderName = message.getSender().getUsername();
-        if(!contexts.containsKey(senderName)) {
-            Chat chat = message.getChat();
+        String chatKey;
+        Chat chat = message.getChat();
+        if(!contexts.containsKey(chatName) && !contexts.containsKey(senderName)) {
             System.out.println("MainController: creando nuevo contexto");
             if(chat.isPrivate()){
                 newPrivateChat(message.getSender());
             } else {
-                newGroupChat((GroupChat) chat);
+                newGroupChat(chat.getName(), ((GroupChat) chat).getUsers());
             }
         }
-        ChatContext context = contexts.get(senderName);
+        /*
+            Separado del if anterior porque tiene que comprobarse siempre, aunque ya exista el contexto.
+         */
+        if(chat.isPrivate()){
+            chatKey = senderName;
+        } else {
+            chatKey = chatName;
+        }
+
+        ChatContext context = contexts.get(chatKey);
         context.getChat().addMessage(message);
 
         Platform.runLater(() -> {
@@ -158,7 +164,6 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
             }
         });
     }
-
 
     public void newChatMenu(MouseEvent mouseEvent) {
         askForOnlineUsers();
@@ -181,6 +186,11 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         vboxChatScreen.getChildren().clear();
         vboxPreview.getChildren().add(chatPreview);
         vboxChatScreen.getChildren().add(chatView);
+    }
+
+    @Override
+    public User getUser() {
+        return user;
     }
 
     private void setOnlineUsersView() {

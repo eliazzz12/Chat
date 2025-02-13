@@ -9,7 +9,7 @@ import java.util.List;
 public interface OnlineUsersMediator {
     void newPrivateChat(User user);
     void newGroupChat(String name, List<User> users);
-    void newGroupChat(GroupChat chat);
     void askForOnlineUsers();
     void setChatView();
+    User getUser();
 }

@@ -39,8 +39,12 @@ public class MessageSenderRunnable implements Runnable {
                 } else {
                     GroupChat groupChat = (GroupChat) chat;
                     List<User> userList = groupChat.getUsers();
-                    userList.remove(message.getSender());
-                    userList.forEach(receiver -> users.get(receiver).sendMessage(message));
+                    User sender = message.getSender();
+                    userList.forEach(receiver -> {
+                        if(!receiver.equals(sender)) {
+                            users.get(receiver).sendMessage(message);
+                        }
+                    });
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
