@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,8 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     private VBox vboxChatScreen;
     @FXML
     private Label userNameLabel;
+    @FXML
+    private Button online_users_button;
 
     public void setConnection(Connection connection) {
         if(connection == null) {
@@ -178,10 +181,12 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         setOnlineUsersView();
         //Cambiar vista chat-view por user-info-preview
         setOnlineUsersInfoPreview();
+        online_users_button.setText("Update");
     }
 
     @Override
     public void setChatView() {
+        online_users_button.setText("Online Users");
         vboxPreview.getChildren().clear();
         vboxChatScreen.getChildren().clear();
         vboxPreview.getChildren().add(chatPreview);

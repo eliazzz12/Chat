@@ -33,7 +33,7 @@
                   <Insets left="50.0" right="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onMouseClicked="#onlineUsersMenu" text="Online Users" />
+            <Button fx:id="online_users_button" mnemonicParsing="false" onMouseClicked="#onlineUsersMenu" text="Online Users" />
          </children>
       </HBox>
    </top>
