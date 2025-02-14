@@ -19,12 +19,15 @@ public class MessageController implements ViewController {
     private Label username;
     @FXML
     private Label text;
+    @FXML
+    private Label time;
 
     public void setMessage(Message message) {
         if(message != null) {
             User sender = message.getSender();
             username.setText(sender.getUsername());
             text.setText(message.getText());
+            time.setText(message.getTimeSent());
             setStyle(message);
         }
     }

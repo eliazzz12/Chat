@@ -165,7 +165,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         });
     }
 
-    public void newChatMenu(MouseEvent mouseEvent) {
+    public void onlineUsersMenu(MouseEvent mouseEvent) {
         askForOnlineUsers();
         while(onlineUsers == null) {
             try {

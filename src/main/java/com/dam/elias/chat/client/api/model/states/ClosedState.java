@@ -2,9 +2,6 @@ package com.dam.elias.chat.client.api.model.states;
 
 import com.dam.elias.chat.client.api.model.ChatContext;
 import com.dam.elias.chat.client.api.model.Message;
-import com.dam.elias.chat.client.gui.controller.ChatInfoController;
-
-import java.time.format.DateTimeFormatter;
 
 public class ClosedState extends State {
 

@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.MessageController">
+<VBox fx:id="vbox_all" styleClass="vbox_message" stylesheets="@message.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.MessageController">
    <children>
-      <Label fx:id="username" text="Label" />
-      <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0">
+      <Label fx:id="username" styleClass="name" text="Name" textFill="WHITE">
+         <VBox.margin>
+            <Insets left="5.0" top="5.0" />
+         </VBox.margin></Label>
+      <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" styleClass="hbox_textTime">
          <children>
-            <ImageView fx:id="profilePicture" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-            <HBox fx:id="textBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="textBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="280.0">
                <children>
-                  <Label fx:id="text" text="Label" />
+                  <Label fx:id="text" text="Text">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
                </children>
             </HBox>
+            <Label fx:id="time" text="Time" />
          </children>
       </HBox>
    </children>

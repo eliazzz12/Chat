@@ -1,0 +1,10 @@
+.hbox_textTime{
+    -fx-background-color: #4098e5;
+    -fx-background-radius: 15px;
+}
+
+.name{
+    -fx-background-color: #4045e5;
+    -fx-background-radius: 10px;
+    -fx-label-padding: 5px;
+}
