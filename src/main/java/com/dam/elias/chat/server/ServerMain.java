@@ -4,6 +4,7 @@ import com.dam.elias.chat.client.api.model.GroupChat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.client.api.model.exceptions.UsernameBeingUsedException;
+import com.dam.elias.chat.server.exceptions.StatusNotSentException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,36 +37,51 @@ public class ServerMain {
         while (true) {
                 try {
                     Socket client = serverSocket.accept();
-                    acceptClient(client);
-                    System.out.println("Client connected");
+                    if(acceptClient(client)){
+                        System.out.println("Client connected");
+                    } else {
+                        System.out.println("Client connection denied");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
     }
 
-    private static void acceptClient(Socket client) throws IOException {
+    private static boolean acceptClient(Socket client) throws IOException {
         System.out.println("Accepting client");
+        boolean isValidUser=false;
         try {
             ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(client.getInputStream());
             User user = (User) in.readObject();
             System.out.println("SERVER: User = " + user.getUsername());
-            boolean isValidUser;
             try{
                 addUser(user, out, in);
                 isValidUser = true;
             } catch (UsernameBeingUsedException _) {
-                isValidUser = false;
+                rejectUserConnection(out);
             }
             System.out.println("SERVER: isValidUser = " + isValidUser);
             users.get(user).sendLoginStatus(isValidUser);
-            Message welcomeMessage = new Message(USER, ALL, "Welcome to the chat "+user.getUsername()+" :D");
-            ALL.addUser(user);
-            messages.add(welcomeMessage);
+            if(isValidUser){
+                Message welcomeMessage = new Message(USER, ALL, "Welcome to the chat "+user.getUsername()+" :D");
+                ALL.addUser(user);
+                messages.add(welcomeMessage);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+        return isValidUser;
+    }
+
+    private static void rejectUserConnection(ObjectOutputStream out) {
+        try {
+            out.writeBoolean(false);
+            out.flush();
+        } catch (IOException e) {
+            throw new StatusNotSentException(e);
         }
     }
 

@@ -56,16 +56,15 @@ public class LoginController implements Initializable {
     }
 
     public void attemptLogin() throws IOException {
-        boolean success = false;
+        boolean user_available = false, connected = false;
         try {
             connection.connect();
             String username = this.usernameInput.getText();
-            success = login(username);
-            if(success){
+            user_available = login(username);
+            if(user_available){
                 launchApp();
             } else {
                 availableLabel.setText(userNameNotAvailableText);
-                //TODO borrar el input
             }
         } catch (IOException e) {
             availableLabel.setText("Login not available at this time");
