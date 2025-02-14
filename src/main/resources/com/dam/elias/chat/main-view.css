@@ -1,0 +1,19 @@
+.all_view{
+    -fx-background-color: #dbd099;
+}
+
+.boxes{
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+
+}
+
+.button{
+    -fx-background-color: #1d76c4;
+}
+
+.user_name{
+    -fx-background-color: #c41d76;
+    -fx-label-padding: 5px;
+    -fx-background-radius: 10px;
+}
