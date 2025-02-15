@@ -9,8 +9,11 @@ Si el cliente no puede conectarse se deberá ejecutar el servidor de forma local
 Se recomienda abrir el proyecto en intelliJ y ejecutar desde ahí.
 
 ## Cómo Ejecutar
-### Ejecución del servidor en local:
-  Ejecutar la clase com.dam.elias.chat.server.ServerMain
+### Opciones de ejecución del servidor en local:
+- Docker
+> docker run --rm -it --name chatServer -p 10101:10101 eliazzzdev/chat_server:latest
+ - IDE
+> Ejecutar la clase com.dam.elias.chat.server.ServerMain
 
 ### Ejecución del cliente:
   Ejecutar la clase com.dam.elias.chat.App
