@@ -1,7 +1,5 @@
 package com.dam.elias.chat.server;
 
-import com.dam.elias.chat.client.api.model.Chat;
-import com.dam.elias.chat.client.api.model.GroupChat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
@@ -10,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class ReceivingRunnable implements Runnable {
