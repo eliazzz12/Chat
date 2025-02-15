@@ -12,7 +12,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 350, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 350, 350);
+        stage.setMinWidth(scene.getWidth());
+        stage.setMinHeight(scene.getHeight());
+        stage.setMaxWidth(scene.getWidth());
+        stage.setMaxHeight(scene.getHeight());
         stage.setScene(scene);
         LoginController controller;
         try {

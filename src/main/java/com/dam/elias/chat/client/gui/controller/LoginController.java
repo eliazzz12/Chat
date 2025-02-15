@@ -47,6 +47,10 @@ public class LoginController implements Initializable {
     private void launchApp() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        stage.setMinHeight(scene.getHeight());
+        stage.setMinWidth(scene.getWidth());
+        stage.setMaxHeight(scene.getHeight());
+        stage.setMaxWidth(scene.getWidth());
         MainController controller = fxmlLoader.getController();
         controller.setUser(user);
         controller.setConnection(connection);
