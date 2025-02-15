@@ -1,6 +1,5 @@
 package com.dam.elias.chat.client.api.connection;
 
-import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.client.gui.controller.MainController;
@@ -72,7 +71,7 @@ public class ReceiverClient implements Runnable {
         if(controller == null) {
             throw new IllegalArgumentException("controller must not be null");
         }
-        this.controller = controller;
+        ReceiverClient.controller = controller;
     }
 
     private void setIn(ObjectInputStream in) {

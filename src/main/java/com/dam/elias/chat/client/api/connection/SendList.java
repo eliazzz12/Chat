@@ -1,6 +1,5 @@
 package com.dam.elias.chat.client.api.connection;
 
-import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.api.model.User;
 
 import java.io.IOException;

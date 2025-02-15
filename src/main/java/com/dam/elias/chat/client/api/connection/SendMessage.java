@@ -1,6 +1,5 @@
 package com.dam.elias.chat.client.api.connection;
 
-import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.api.model.Message;
 
 import java.io.IOException;
@@ -35,12 +34,6 @@ public class SendMessage implements Runnable {
                 }
             }
         } while (!sent && tryCount < 1000);
-
-//        if(sent){
-//            chatManagerGUI.messageSent(message, chat);
-//        } else {
-//            chatManagerGUI.messageNotSent(message, chat);
-//        }
     }
 
     public void setOut(ObjectOutputStream out) {

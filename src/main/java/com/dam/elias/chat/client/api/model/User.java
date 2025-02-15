@@ -1,10 +1,6 @@
 package com.dam.elias.chat.client.api.model;
 
-import javafx.scene.image.Image;
-
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class User implements Serializable {
