@@ -30,6 +30,7 @@ Se recomienda abrir el proyecto en intelliJ y ejecutar desde ahí.
 
 ### Errores conocidos
 - La burbuja de mensajes no se adapta al texto del mensaje, cortando los mensajes a partir de cierta longitud.
+- No se informa de la desconexión del otro usuario en la conversación
 
 #### Otros
 - Hay fragmentos de código de funcionalidades no implementadas.
