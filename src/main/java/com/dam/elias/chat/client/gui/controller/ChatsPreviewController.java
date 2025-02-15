@@ -1,39 +1,46 @@
 package com.dam.elias.chat.client.gui.controller;
 
-import com.dam.elias.chat.client.api.model.Chat;
 import com.dam.elias.chat.client.gui.mediator.ChatsPreviewMediator;
 import com.dam.elias.chat.client.gui.mediator.Mediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class ChatsPreviewController implements ViewController {
+public class ChatsPreviewController implements ViewController, Initializable {
     ChatsPreviewMediator mediator;
-    List<Chat> searchedChats;
+    List<Parent> searchedChats;
     @FXML
     TextField searchNameInput;
     @FXML
     VBox vb_chats_info;
 
-    @FXML
-    private void searchChat(ActionEvent event) {
-        searchedChats = mediator.getChatsMatching(searchNameInput.getText());
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        searchNameInput.setOnKeyReleased(keyEvent -> {
+            searchChat(searchNameInput.getText());
+        });
+    }
+
+    private void searchChat(String search) {
+        System.out.println("ChatPreviewController: Buscando chats");
+        searchedChats = mediator.getChatsMatching(search);
         List<Node> children = vb_chats_info.getChildren();
-//        try {
-            //TODO convertir searchedChats en List<Parent>
-//            drawChats(searchedChats);
-            children.clear();
-//        } catch (IOException e) {
+        children.clear();
+        try {
+            drawChats(searchedChats);
+        } catch (IOException e) {
             //TODO gestionar
-//            throw new RuntimeException(e);
-//        }
+            throw new RuntimeException(e);
+        }
     }
 
     public void drawChats(List<Parent> items) throws IOException {

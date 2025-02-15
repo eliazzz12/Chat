@@ -18,7 +18,7 @@
             </Label>
             <HBox fx:id="hb_preview_top" alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="searchNameInput" onKeyTyped="#searchChat" promptText="Search" />
+                  <TextField fx:id="searchNameInput" promptText="Search" />
                </children>
             </HBox>
          </children>

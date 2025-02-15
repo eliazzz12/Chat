@@ -5,9 +5,8 @@ import com.dam.elias.chat.client.api.connection.Connection;
 import com.dam.elias.chat.client.api.connection.SendList;
 import com.dam.elias.chat.client.api.connection.SendMessage;
 import com.dam.elias.chat.client.api.model.*;
-import com.dam.elias.chat.client.api.model.ChatContext;
-import com.dam.elias.chat.client.gui.mediator.*;
 import com.dam.elias.chat.client.api.model.states.ClosedState;
+import com.dam.elias.chat.client.gui.mediator.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -260,18 +259,35 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     /**
      * Searches chat names.
      *
-     * @param text the search text
+     * @param search the search text
      * @return a list with Chats containing the search in their name
      */
     @Override
-    public List<Chat> getChatsMatching(String text) {
-        List<Chat> list = new ArrayList<>();
+    public List<Parent> getChatsMatching(String search) {
+        List<Parent> list = new ArrayList<>();
+        System.out.println("Chats encontrados:");
         contexts.forEach((k,v) -> {
-            if(k.contains(text)) {
-                list.add(v.getChat());
+            System.out.println("Key: "+k+". Search: "+search);
+            if(containsIgnoreCase(k, search)) {
+                list.add(v.getInfoItem());
+                System.out.print(v.getChat().getName()+" | ");
             }
         });
         return list;
+    }
+
+    public static boolean containsIgnoreCase(String str, String searchStr)     {
+        if(str == null || searchStr == null) return false;
+
+        final int length = searchStr.length();
+        if (length == 0)
+            return true;
+
+        for (int i = str.length() - length; i >= 0; i--) {
+            if (str.regionMatches(true, i, searchStr, 0, length))
+                return true;
+        }
+        return false;
     }
 
     public void setUser(User user) {
