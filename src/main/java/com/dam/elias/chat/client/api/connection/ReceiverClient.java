@@ -1,13 +1,14 @@
 package com.dam.elias.chat.client.api.connection;
 
-import com.dam.elias.chat.client.api.model.*;
+import com.dam.elias.chat.client.api.model.Chat;
+import com.dam.elias.chat.client.api.model.Message;
+import com.dam.elias.chat.client.api.model.User;
 import com.dam.elias.chat.client.gui.controller.MainController;
 import com.dam.elias.chat.server.exceptions.HandlerNotFoundException;
-import com.sun.tools.javac.Main;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +24,12 @@ public class ReceiverClient implements Runnable {
 
     @Override
     public void run() {
-        while (!Thread.interrupted()) {
+        boolean running = true;
+        while (!Thread.interrupted() && running) {
             try {
                 handle(in.readObject());
+            } catch (SocketException _){
+                running = false;
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
