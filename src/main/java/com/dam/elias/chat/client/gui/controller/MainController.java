@@ -29,7 +29,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     private static ChatViewController chatViewController;
     private static ChatsPreviewController previewController;
     private static OnlineUsersController onlineUsersController;
-    private Map<String, ChatContext> contexts = new HashMap<>();
+    private final Map<String, ChatContext> contexts = new HashMap<>();
     private List<User> onlineUsers;
 
     @FXML
@@ -149,9 +149,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         ChatContext context = contexts.get(chatKey);
         context.getChat().addMessage(message);
 
-        Platform.runLater(() -> {
-            context.getState().addNewMessage(message);
-        });
+        Platform.runLater(() -> context.getState().addNewMessage(message));
         updatePreviewChats();
     }
 
@@ -166,7 +164,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         });
     }
 
-    public void onlineUsersMenu(MouseEvent mouseEvent) {
+    public void onlineUsersMenu() {
         askForOnlineUsers();
         while(onlineUsers == null) {
             try {
@@ -217,9 +215,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     }
 
     public void closeChats() {
-        contexts.values().forEach(context -> {
-           context.setState(new ClosedState(context));
-        });
+        contexts.values().forEach(context -> context.setState(new ClosedState(context)));
     }
 
     private void setOnlineUsersInfoPreview() {
