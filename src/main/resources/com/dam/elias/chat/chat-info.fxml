@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
-<HBox fx:id="hb_chat_info" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#openChat" prefHeight="50.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatInfoController">
+<HBox fx:id="hb_chat_info" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" onMouseClicked="#openChat" prefHeight="50.0" prefWidth="500.0" styleClass="hbox_root" stylesheets="@chat-info.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatInfoController">
    <children>
-      <VBox fx:id="vb_info_main" maxWidth="-Infinity" prefHeight="200.0" prefWidth="180.0">
+      <VBox fx:id="vb_info_main" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox fx:id="hb_nombre_hora" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="160.0">
+            <HBox fx:id="hb_nombre_hora" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="20.0" prefWidth="250.0">
                <children>
                   <Label fx:id="nombre" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Nombre" HBox.hgrow="ALWAYS" />
                   <Label fx:id="horaFecha" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Hora" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <VBox fx:id="vb_ultimo_mensaje" alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="200.0" prefWidth="160.0">
+            <VBox fx:id="vb_ultimo_mensaje" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="160.0">
                <children>
-                  <Label fx:id="ultimoMensaje" text="ultimo mensaje" />
+                  <Label fx:id="ultimoMensaje" text="ultimo mensaje">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Label>
+                  <Line endX="64.5" startX="-100.0" stroke="#9e9e9e">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Line>
                </children>
             </VBox>
          </children>

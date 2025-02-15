@@ -23,15 +23,16 @@ public class MessageController implements ViewController {
         if(message != null) {
             User sender = message.getSender();
             username.setText(sender.getUsername());
-            text.setText(message.getText());
             time.setText(message.getTimeSent());
             setStyle(message);
+            text.setText(message.getText());
         }
     }
 
     private void setStyle(Message message) {
         if(mediator.isFromThisUser(message)) {
             ((VBox)username.getParent()).setAlignment(Pos.TOP_RIGHT);
+            text.setAlignment(Pos.CENTER_RIGHT);
         }
     }
 
