@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vb_chats_preview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatsPreviewController">
+<VBox fx:id="vb_chats_preview" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatsPreviewController">
    <children>
-      <VBox alignment="CENTER" prefHeight="80.0" prefWidth="100.0">
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="80.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
             <Label fx:id="label_chat_preview_title" text="Conversaciones">
                <VBox.margin>
@@ -18,14 +18,14 @@
             </Label>
             <HBox fx:id="hb_preview_top" alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="searchNameInput" onKeyTyped="#searchChat" />
+                  <TextField fx:id="searchNameInput" onKeyTyped="#searchChat" promptText="Search" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <ScrollPane prefHeight="445.0" prefWidth="300.0">
+      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="445.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
          <content>
-            <VBox fx:id="vb_chats_info" maxHeight="-Infinity" prefHeight="445.0" prefWidth="284.0" />
+            <VBox fx:id="vb_chats_info" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="420.0" prefWidth="284.0" />
          </content>
       </ScrollPane>
    </children>

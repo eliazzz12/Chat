@@ -13,10 +13,11 @@
       <Pane fx:id="panel_abajo_vacio" prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <VBox fx:id="vboxPreview" prefHeight="200.0" prefWidth="100.0" styleClass="boxes" BorderPane.alignment="TOP_CENTER">
+      <VBox fx:id="vboxPreview" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0" styleClass="boxes" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" top="10.0" />
-         </BorderPane.margin></VBox>
+         </BorderPane.margin>
+      </VBox>
    </center>
    <right>
       <VBox fx:id="vboxChatScreen" prefHeight="200.0" prefWidth="400.0" styleClass="boxes" BorderPane.alignment="TOP_CENTER">

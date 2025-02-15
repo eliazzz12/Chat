@@ -9,20 +9,20 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatViewController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <Label fx:id="nombreChat" text="Nombre Chat" />
          </children>
       </HBox>
-      <ScrollPane prefHeight="400.0" prefWidth="200.0">
+      <ScrollPane fx:id="scroll_mensajes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <content>
             <VBox fx:id="vboxMensajes" prefHeight="400.0" prefWidth="580.0" />
          </content>
       </ScrollPane>
-      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+      <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <TextField fx:id="inputMensaje" prefHeight="30.0" prefWidth="500.0" />
-            <Button fx:id="botonEnviar" mnemonicParsing="false" text="Enviar" onMouseClicked="#sendMessage" />
+            <TextField fx:id="inputMensaje" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="500.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="botonEnviar" maxWidth="1.7976931348623157E308" minWidth="80.0" mnemonicParsing="false" onMouseClicked="#sendMessage" text="Enviar" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>
