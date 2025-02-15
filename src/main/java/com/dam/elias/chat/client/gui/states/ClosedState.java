@@ -1,6 +1,6 @@
-package com.dam.elias.chat.client.api.model.states;
+package com.dam.elias.chat.client.gui.states;
 
-import com.dam.elias.chat.client.api.model.ChatContext;
+import com.dam.elias.chat.client.gui.ChatContext;
 import com.dam.elias.chat.client.api.model.Message;
 import com.dam.elias.chat.client.gui.controller.ChatInfoController;
 

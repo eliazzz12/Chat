@@ -13,6 +13,8 @@ module com.dam.elias.chat {
     opens com.dam.elias.chat.client.gui.controller to javafx.fxml;
     exports com.dam.elias.chat.client.api.model;
     opens com.dam.elias.chat.client.api.model to javafx.fxml;
-    exports com.dam.elias.chat.client.api.model.states;
-    opens com.dam.elias.chat.client.api.model.states to javafx.fxml;
+    exports com.dam.elias.chat.client.gui;
+    opens com.dam.elias.chat.client.gui to javafx.fxml;
+    exports com.dam.elias.chat.client.gui.states;
+    opens com.dam.elias.chat.client.gui.states to javafx.fxml;
 }
