@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -26,8 +25,6 @@ public class LoginController implements Initializable {
     private static final String userNameNotAvailableText = "Username not available";
     @FXML
     private TextField usernameInput;
-    @FXML
-    private Button loginButton;
     @FXML
     private Label availableLabel;
 
@@ -60,17 +57,16 @@ public class LoginController implements Initializable {
     }
 
     public void attemptLogin() throws IOException {
-        boolean user_available = false, connected = false;
         try {
             connection.connect();
             String username = this.usernameInput.getText();
-            user_available = login(username);
+            boolean user_available = login(username);
             if(user_available){
                 launchApp();
             } else {
                 availableLabel.setText(userNameNotAvailableText);
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             availableLabel.setText("Login not available at this time");
         }
     }

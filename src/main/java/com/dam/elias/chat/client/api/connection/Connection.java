@@ -13,12 +13,13 @@ import java.util.List;
 
 public class Connection {
     private Socket server;
-    protected InetAddress address;
+    protected String address;
     protected int port;
     protected ObjectOutputStream out;
     protected ObjectInputStream in;
+    private boolean connected = false;
 
-    public Connection(Application.Parameters params) throws UnknownHostException {
+    public Connection(Application.Parameters params) {
         List<String> parameterList = params.getRaw();
         Iterator<String> iterator = parameterList.iterator();
         while (iterator.hasNext()) {
@@ -26,7 +27,7 @@ public class Connection {
             if(parameter.equalsIgnoreCase("-ip")) {
                 String ip = iterator.next();
                 System.out.println("Direccion ip: "+ip);
-                setAddress(InetAddress.getByName(ip));
+                setAddress(ip);
             }
             if(parameter.equalsIgnoreCase("-port")) {
                 String port = iterator.next();
@@ -36,11 +37,19 @@ public class Connection {
         }
     }
 
-    public void connect() throws IOException {
-        System.out.println("Conectando a " + address.getCanonicalHostName() + ":" + port);
-        server = new Socket(address, port);
+    /**
+     * Establishes the connection with the server
+     * @throws IOException if an I/O error occurs when creating the socket.
+     * @throws UnknownHostException if no IP address for the host could be found,
+     * or if a scope_id was specified for a global IPv6 address.
+     */
+    public void connect() throws IOException, UnknownHostException {
+        InetAddress addr = InetAddress.getByName(address);
+        System.out.println("Conectando a " + address + ":" + port);
+        server = new Socket(addr, port);
         out = new ObjectOutputStream(server.getOutputStream());
         in = new ObjectInputStream(server.getInputStream());
+        connected = true;
     }
 
     /**
@@ -52,11 +61,12 @@ public class Connection {
         in.close();
         out.close();
         server.close();
+        connected = false;
     }
 
-    private void setAddress(InetAddress address) {
-        if(address == null) {
-            throw new IllegalArgumentException("address cannot be null");
+    private void setAddress(String address) {
+        if(address == null || address.isEmpty()) {
+            throw new IllegalArgumentException("address cannot be null or empty");
         }
         this.address = address;
     }
@@ -74,5 +84,9 @@ public class Connection {
 
     public ObjectOutputStream getOut() {
         return out;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 }
