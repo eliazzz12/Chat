@@ -12,7 +12,6 @@ public class OpenedState extends State {
 
     @Override
     public void addNewMessage(Message message){
-//        context.getChat().addMessage(message);
         updateInfo(message);
         updateChatView(message);
     }
@@ -26,6 +25,7 @@ public class OpenedState extends State {
 
     public void openChat() {
         // Ya está abierto, no hay que hacer nada
+        System.out.println("OpenedState: ya estoy abierto");
     }
 
 

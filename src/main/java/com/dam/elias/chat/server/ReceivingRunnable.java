@@ -68,8 +68,6 @@ public class ReceivingRunnable implements Runnable {
     private static final Map<Class,Handler> dispatch = Map.ofEntries(
         Map.entry(Message.class, o -> handleMessage((Message) o)),
         Map.entry(User.class, o -> handleUser((User) o)),
-        Map.entry(Chat.class, o -> handleChat((Chat) o)),
-        Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
         Map.entry(ArrayList.class, o -> handleList((ArrayList<User>) o))
     );
 
@@ -97,51 +95,6 @@ public class ReceivingRunnable implements Runnable {
     static void handleUser(User userToUpdate){
         throw new UnsupportedOperationException("Not implemented yet");
         //TODO updateUser(): actualizar datos en todos los clientes que tengan conversación con el user
-    }
-
-    static void handleObjectArray(Object[] array){
-        boolean exists = false;
-        User askingUser = (User) array[0];
-        Class searchedClass = (Class) array[1];
-        String searchedName = (String) array[2];
-
-        if(searchedClass == User.class) {
-            exists = userExists(searchedName);
-        } else if(searchedClass == GroupChat.class) {
-            exists = groupChatExists(searchedName);
-        }
-
-        users.get(askingUser).sendUserStatus(exists);
-    }
-
-    private static boolean groupChatExists(String groupName){
-        throw new UnsupportedOperationException("Not implemented yet");
-        //TODO crear coleccion groupChats Set<GroupChat>
-//        boolean exists = false;
-//        Set<GroupChat> gcSet = groupChats.keySet();
-//        for(GroupChat gc : gcSet){
-//            if(gc.getName().equals(groupName)){
-//                exists = true;
-//                break;
-//            }
-//        }
-//        return exists;
-    }
-
-    private static boolean userExists(String username) {
-        boolean exists = false;
-        Set<User> usersSet = users.keySet();
-        for(User u : usersSet){
-            if(u.getUsername().equals(username)){
-                exists = true;
-                break;
-            }
-        }
-        return exists;
-    }
-
-    static void handleChat(Chat chat){
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void setUser(User user) {

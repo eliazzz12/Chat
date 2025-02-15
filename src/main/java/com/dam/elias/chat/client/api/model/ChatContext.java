@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 public class ChatContext {
     private Chat chat;
     private Parent infoItem;
-    private Parent chatViewItem;
     private State state;
     private ChatInfoController chatInfoController;
     private ChatViewController chatViewController;
@@ -21,12 +20,6 @@ public class ChatContext {
         setChatViewController(chatViewController);
     }
 
-    public ChatContext(Chat chat, ChatInfoController chatInfoController, ChatViewController chatViewController) {
-        this.chatInfoController = chatInfoController;
-        this.chatViewController = chatViewController;
-        this.chat = chat;
-    }
-
     public void setChat(Chat chat) {
         this.chat = chat;
     }
@@ -36,13 +29,6 @@ public class ChatContext {
             throw new IllegalArgumentException("Info Item cannot be null");
         }
         infoItem = item;
-    }
-
-    public void setChatViewItem(Parent item) {
-        if(item == null) {
-            throw new IllegalArgumentException("Chat View Item cannot be null");
-        }
-        chatViewItem = item;
     }
 
     public void setState(State state) {
@@ -63,10 +49,6 @@ public class ChatContext {
 
     public Parent getInfoItem() {
         return infoItem;
-    }
-
-    public Parent getChatViewItem() {
-        return chatViewItem;
     }
 
     public State getState() {

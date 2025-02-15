@@ -36,15 +36,6 @@ public class Sender {
         }
     }
 
-    public void sendUserStatus(boolean status) {
-        try {
-            out.writeBoolean(status);
-            out.flush();
-        } catch (IOException e) {
-            throw new StatusNotSentException(e);
-        }
-    }
-
     public void sendUserList(List<User> list) {
         try{
             out.writeObject(list);

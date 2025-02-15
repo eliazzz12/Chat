@@ -1,7 +1,5 @@
 package com.dam.elias.chat.client.gui.mediator;
 
-import com.dam.elias.chat.client.api.model.Chat;
-import com.dam.elias.chat.client.api.model.GroupChat;
 import com.dam.elias.chat.client.api.model.User;
 
 import java.util.List;

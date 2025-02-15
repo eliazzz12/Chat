@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 
 
 public class ChatInfoController implements ViewController {
-    //Eventos: hacer click, cambiarUltimoMensaje(texto y hora)
     private ChatInfoMediator mediator;
 
     @FXML

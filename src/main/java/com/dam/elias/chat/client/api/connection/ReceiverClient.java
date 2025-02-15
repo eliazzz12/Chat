@@ -43,8 +43,6 @@ public class ReceiverClient implements Runnable {
     private static final Map<Class, ReceiverClient.Handler> dispatch = Map.ofEntries(
             Map.entry(Message.class, o -> handleMessage((Message) o)),
             Map.entry(User.class, o -> handleUser((User) o)),
-            Map.entry(Chat.class, o -> handleChat((Chat) o)),
-            Map.entry(Object[].class, o -> handleObjectArray((Object[]) o)),
             Map.entry(ArrayList.class, o -> handleList((ArrayList<User>) o))
     );
 
@@ -67,36 +65,7 @@ public class ReceiverClient implements Runnable {
 
     static void handleUser(User userToUpdate){
         throw new UnsupportedOperationException("Not implemented yet");
-        //TODO updateUser(): actualizar datos en todos los clientes que tengan conversación con el user
-    }
-    /*
-        Método del cliente para saber si existe o no un usuario
-        estaría en el MainController
-     */
-//    public boolean doesUserExist(String username) throws IOException {
-//        Object[] array = {user, User.class, username};
-//        out.writeObject(array);
-//        return in.readBoolean();
-//    }
-
-    static void handleObjectArray(Object[] array){
-        throw new UnsupportedOperationException("Not implemented yet");
-//        boolean exists = false;
-//        User askingUser = (User) array[0];
-//        Class searchedClass = (Class) array[1];
-//        String searchedName = (String) array[2];
-//
-//        if(searchedClass == User.class) {
-//            exists = userExists(searchedName);
-//        } else if(searchedClass == GroupChat.class) {
-//            exists = groupChatExists(searchedName);
-//        }
-//
-//        users.get(askingUser).sendUserStatus(exists);
-    }
-
-    static void handleChat(Chat chat){
-        throw new UnsupportedOperationException("Not implemented yet");
+        //updateUser(): actualizar datos en todos los clientes que tengan conversación con el user
     }
 
     public void setController(MainController controller) {

@@ -9,7 +9,7 @@ public class Message implements Serializable, Comparable<Message> {
     private User sender;
     private Chat chat;
     private String text;
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
     private boolean sent;
 
     public Message(User sender, Chat chat, String text) {

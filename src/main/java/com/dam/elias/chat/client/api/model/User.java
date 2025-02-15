@@ -13,34 +13,17 @@ public class User implements Serializable {
      * queda libre para que lo usen otros usuarios cuando se cierra la sesión.
      */
     private String username;
-    /**
-     * Mapea cada chat con su id.
-     */
-    private Map<Integer, Chat> chats;
 
     public User(String username) {
         setUsername(username);
-        chats = new HashMap<>();
-    }
-
-    public void addChat(Chat chat) {
-//        chats.put(chat.getId(), chat);
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setChats(Map<Integer, Chat> chats) {
-        this.chats = chats;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public Map<Integer, Chat> getChats() {
-        return chats;
     }
 
      @Override

@@ -6,7 +6,6 @@ import com.dam.elias.chat.client.api.model.exceptions.UserNotInThisChatException
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 public class MessageSenderRunnable implements Runnable {
@@ -39,6 +38,7 @@ public class MessageSenderRunnable implements Runnable {
                          */
                     }
                 } else if(chat.getName().equals("ALL")) {
+                    removeDisconnectedUsers((GroupChat) chat);
                     if(message.getSender().getUsername().equals("SERVER")) {
                         String userName = message.getText().split(" ")[4];
                         User receiver = getUserByName(userName);
@@ -73,6 +73,12 @@ public class MessageSenderRunnable implements Runnable {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+        }
+    }
+
+    private void removeDisconnectedUsers(GroupChat chat) {
+        for(User user : chat.getUsers()) {
+//            if()
         }
     }
 

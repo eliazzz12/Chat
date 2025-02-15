@@ -82,8 +82,7 @@ public class LoginController implements Initializable {
     }
 
     public User createUser(String username){
-        User newUser = new User(username);
-        return newUser;
+        return new User(username);
     }
 
     public void setUser(User user) {

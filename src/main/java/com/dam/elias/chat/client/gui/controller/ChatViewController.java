@@ -53,7 +53,6 @@ public class ChatViewController implements ViewController, Initializable {
         inputMensaje.setText("");
     }
 
-    //Añadir mensaje, enviar mensaje, borrar mensaje
     public void receive(Message message) {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("message.fxml"));
         try {

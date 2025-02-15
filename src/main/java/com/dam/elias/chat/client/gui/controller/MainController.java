@@ -94,14 +94,12 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
     public void newChat(Chat chat){
         System.out.println("MainController: creando newChat");
         try {
-            //FIXME Necesita de los dos items?
             FXMLLoader fxmlLoaderInfo = new FXMLLoader(App.class.getResource("chat-info.fxml"));
             Parent infoItem = fxmlLoaderInfo.load();
             ChatInfoController infoController = fxmlLoaderInfo.getController();
             infoController.setMediator(this);
             infoController.setup(chat);
             ChatContext context = new ChatContext(chat, infoItem, infoController, chatViewController);
-//            ChatContext context = new ChatContext(chat, infoController, chatViewController);
             context.setState(new ClosedState(context));
             contexts.put(chat.getName(), context);
             updatePreviewChats();
@@ -140,7 +138,7 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
             }
         }
         /*
-            Separado del if anterior porque tiene que comprobarse siempre, aunque ya exista el contexto.
+            Separado del if anterior porque tiene que comprobarse existiera o no contexto.
          */
         if(chat.isPrivate()){
             chatKey = senderName;
@@ -243,15 +241,6 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
 
     public void updateOnlineUsers(List<User> list) {
         onlineUsers = list;
-    }
-
-    public void noConnection(Exception e) {
-        //TODO implementar que ocurre cuando no puede conectarse
-        System.out.println("No connection: " + e.getMessage());
-    }
-
-    public void sendError(Exception e) {
-        //TODO implementar que ocurre cuando no se puede enviar
     }
 
     public void sendMessage(String chatName, String text) {

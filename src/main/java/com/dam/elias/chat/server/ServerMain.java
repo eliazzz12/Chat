@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -28,13 +27,8 @@ public class ServerMain {
     public static void main(String[] args) {
         final int port = 10101;
         new Thread(new MessageSenderRunnable(users, messages)).start();
-        ServerSocket serverSocket = null;
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        while (true) {
+        try(ServerSocket serverSocket = new ServerSocket(port)){
+            while(!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket client = serverSocket.accept();
                     if(acceptClient(client)){
@@ -43,9 +37,12 @@ public class ServerMain {
                         System.out.println("Client connection denied");
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Client connection error");
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static boolean acceptClient(Socket client) throws IOException {
@@ -59,19 +56,18 @@ public class ServerMain {
             try{
                 addUser(user, out, in);
                 isValidUser = true;
+                users.get(user).sendLoginStatus(isValidUser);
             } catch (UsernameBeingUsedException _) {
                 rejectUserConnection(out);
             }
             System.out.println("SERVER: isValidUser = " + isValidUser);
-            users.get(user).sendLoginStatus(isValidUser);
             if(isValidUser){
                 Message welcomeMessage = new Message(USER, ALL, "Welcome to the chat "+user.getUsername()+" :D");
                 ALL.addUser(user);
                 messages.add(welcomeMessage);
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            System.out.println("SERVER: Clase User no encontrada");
         }
         return isValidUser;
     }
@@ -92,9 +88,5 @@ public class ServerMain {
         users.put(user, new Sender(out));
         new Thread(new ReceivingRunnable(user, users, messages, in)).start();
         System.out.println("SERVER: User added "+user.getUsername());
-    }
-
-    public static void removeUser(User user) {
-        users.remove(user);
     }
 }
