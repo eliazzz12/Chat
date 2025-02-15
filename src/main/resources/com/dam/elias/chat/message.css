@@ -8,3 +8,10 @@
     -fx-background-radius: 10px;
     -fx-label-padding: 5px;
 }
+
+.my_name{
+    -fx-background-color: #4045e5;
+    -fx-background-radius: 10px;
+    -fx-label-padding: 5px;
+    -fx-alignment: center-right;
+}

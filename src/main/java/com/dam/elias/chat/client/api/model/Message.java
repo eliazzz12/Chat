@@ -1,13 +1,9 @@
 package com.dam.elias.chat.client.api.model;
 
-import javafx.fxml.Initializable;
-
 import java.io.Serializable;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class Message implements Serializable, Comparable<Message> {
     private User sender;
@@ -67,7 +63,6 @@ public class Message implements Serializable, Comparable<Message> {
     }
 
     public String getTimeSent(){
-        System.out.println("Message: obteniendo la hora");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return timestamp.format(formatter);
     }

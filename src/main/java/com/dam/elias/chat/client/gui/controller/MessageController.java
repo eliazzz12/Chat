@@ -6,13 +6,10 @@ import com.dam.elias.chat.client.gui.mediator.Mediator;
 import com.dam.elias.chat.client.gui.mediator.MessageMediator;
 import com.dam.elias.chat.client.gui.mediator.ViewController;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-/*
-    controlo el texto, quien envia(para saber a que lado poner la burbuja del mensaje)
- */
 public class MessageController implements ViewController {
     private MessageMediator mediator;
     @FXML
@@ -34,13 +31,7 @@ public class MessageController implements ViewController {
 
     private void setStyle(Message message) {
         if(mediator.isFromThisUser(message)) {
-            //Poner nombre de usuario a la derecha
-//            username.setLayoutX(100);
-            System.out.println("YO: "+message.getText());
-        } else {
-            //Poner nombre de usuario a la izquierda
-//            username.setLayoutX(0);
-            System.out.println("OTRO: "+message.getText());
+            ((VBox)username.getParent()).setAlignment(Pos.TOP_RIGHT);
         }
     }
 
