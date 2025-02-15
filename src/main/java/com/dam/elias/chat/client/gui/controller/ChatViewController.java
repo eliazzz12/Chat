@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,8 @@ public class ChatViewController implements ViewController, Initializable {
     private VBox vboxMensajes;
     @FXML
     private TextField inputMensaje;
+    @FXML
+    private ScrollPane scroll_mensajes;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,6 +65,7 @@ public class ChatViewController implements ViewController, Initializable {
             Platform.runLater(() -> {
                 System.out.println("ChatViewController: añadiendo mensaje "+message.getText());
                 vboxMensajes.getChildren().add(item);
+                vboxMensajes.heightProperty().addListener(observable -> scroll_mensajes.setVvalue(1D));
             });
         } catch (IOException e) {
             //TODO gestionar
