@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <HBox fx:id="hb_chat_info" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" onMouseClicked="#openChat" prefHeight="50.0" prefWidth="500.0" styleClass="hbox_root" stylesheets="@chat-info.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dam.elias.chat.client.gui.controller.ChatInfoController">
    <children>
@@ -31,6 +32,12 @@
             </VBox>
          </children>
       </VBox>
-      <Label fx:id="contadorNoLeidos" alignment="CENTER" text="0" />
+      <Label fx:id="contadorNoLeidos" alignment="CENTER" styleClass="unread" text="0">
+         <HBox.margin>
+            <Insets right="10.0" />
+         </HBox.margin>
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </HBox>

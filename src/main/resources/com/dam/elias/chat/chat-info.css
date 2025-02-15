@@ -2,3 +2,9 @@
     -fx-background-color: #9ddee0;
     -fx-background-radius: 5px;
 }
+
+.unread{
+    -fx-background-color:  #c41d76 ;
+    -fx-background-radius: 50px;
+    -fx-label-padding: 5px;
+}

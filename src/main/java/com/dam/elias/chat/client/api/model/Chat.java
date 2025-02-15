@@ -22,11 +22,13 @@ public abstract class Chat implements Serializable, Comparable<Chat> {
             messageList.add(message);
             System.out.println("Chat: Message added: " + message.getText());
         }
-//            unreadIndex++;
+        unreadIndex++;
+        System.out.println("Chat: Mensajes no leidos: " + unreadIndex);
     }
 
     public void setAllRead(){
         unreadIndex = 0;
+        System.out.println("Chat: TODO LEIDO");
     }
 
     public boolean isPrivate(){
