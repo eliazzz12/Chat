@@ -79,48 +79,18 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         }
     }
 
-    @Override
-    public void newPrivateChat(User user){
-        PrivateChat chat = new PrivateChat(this.user, user);
-        newChat(chat);
-    }
-
-    @Override
-    public void newGroupChat(String name, List<User> users){
-        GroupChat chat = new GroupChat(name, users);
-        newChat(chat);
-    }
-
-    public void newChat(Chat chat){
-        System.out.println("MainController: creando newChat");
-        try {
-            FXMLLoader fxmlLoaderInfo = new FXMLLoader(App.class.getResource("chat-info.fxml"));
-            Parent infoItem = fxmlLoaderInfo.load();
-            ChatInfoController infoController = fxmlLoaderInfo.getController();
-            infoController.setMediator(this);
-            infoController.setup(chat);
-            ChatContext context = new ChatContext(chat, infoItem, infoController, chatViewController);
-            context.setState(new ClosedState(context));
-            contexts.put(chat.getName(), context);
+    public void sendMessage(String chatName, String text) {
+        System.out.println("MainController: enviando mensaje "+text);
+        ChatContext context = contexts.get(chatName);
+        if(context != null) {
+            Chat chat = context.getChat();
+            Message message = new Message(user, chat, text);
+            message.addToChat();
+            context.getState().addNewMessage(message);
+            SendMessage sendMessage = new SendMessage(connection.getOut(), message);
+            new Thread(sendMessage).start();
             updatePreviewChats();
-        } catch (IOException e) {
-            //TODO gestionar
-            throw new RuntimeException(e);
         }
-    }
-
-    private List<Parent> getInfoItemList() {
-        List<Parent> list = new ArrayList<>();
-        List<Chat> chats = new ArrayList<>();
-
-        contexts.values().forEach(chatContext -> chats.add(chatContext.getChat()));
-        Collections.sort(chats);
-
-        for(Chat chat : chats) {
-            list.add(contexts.get(chat.getName()).getInfoItem());
-        }
-
-        return list;
     }
 
     public void receiveNewMessage(Message message) {
@@ -153,15 +123,23 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         updatePreviewChats();
     }
 
-    private void updatePreviewChats() {
-        Platform.runLater(() -> {
-            System.out.println("MainController: updatePreviewChats");
-            try {
-                previewController.drawChats(getInfoItemList());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    @Override
+    public void newPrivateChat(User user){
+        PrivateChat chat = new PrivateChat(this.user, user);
+        newChat(chat);
+    }
+
+    @Override
+    public void newGroupChat(String name, List<User> users){
+        GroupChat chat = new GroupChat(name, users);
+        newChat(chat);
+    }
+
+    public void askForOnlineUsers() {
+        List<User> list = new ArrayList<>();
+        list.add(user);
+        SendList thread = new SendList(connection.getOut(), list);
+        new Thread(thread).start();
     }
 
     public void onlineUsersMenu() {
@@ -194,6 +172,60 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         return user;
     }
 
+    public void openChat(String chatName) {
+        ChatContext context = contexts.get(chatName);
+        context.setChatViewController(chatViewController);
+        closeChats();
+        context.getState().openChat();
+    }
+
+    public void closeChats() {
+        contexts.values().forEach(context -> context.setState(new ClosedState(context)));
+    }
+
+    public void newChat(Chat chat){
+        System.out.println("MainController: creando newChat");
+        try {
+            FXMLLoader fxmlLoaderInfo = new FXMLLoader(App.class.getResource("chat-info.fxml"));
+            Parent infoItem = fxmlLoaderInfo.load();
+            ChatInfoController infoController = fxmlLoaderInfo.getController();
+            infoController.setMediator(this);
+            infoController.setup(chat);
+            ChatContext context = new ChatContext(chat, infoItem, infoController, chatViewController);
+            context.setState(new ClosedState(context));
+            contexts.put(chat.getName(), context);
+            updatePreviewChats();
+        } catch (IOException e) {
+            //TODO gestionar
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updatePreviewChats() {
+        Platform.runLater(() -> {
+            System.out.println("MainController: updatePreviewChats");
+            try {
+                previewController.drawChats(getInfoItemList());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private List<Parent> getInfoItemList() {
+        List<Parent> list = new ArrayList<>();
+        List<Chat> chats = new ArrayList<>();
+
+        contexts.values().forEach(chatContext -> chats.add(chatContext.getChat()));
+        Collections.sort(chats);
+
+        for(Chat chat : chats) {
+            list.add(contexts.get(chat.getName()).getInfoItem());
+        }
+
+        return list;
+    }
+
     private void setOnlineUsersView() {
         vboxPreview.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("online-users-view.fxml"));
@@ -207,17 +239,6 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         }
     }
 
-    public void openChat(String chatName) {
-        ChatContext context = contexts.get(chatName);
-        context.setChatViewController(chatViewController);
-        closeChats();
-        context.getState().openChat();
-    }
-
-    public void closeChats() {
-        contexts.values().forEach(context -> context.setState(new ClosedState(context)));
-    }
-
     private void setOnlineUsersInfoPreview() {
         vboxChatScreen.getChildren().clear();
         try {
@@ -228,29 +249,8 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         }
     }
 
-    public void askForOnlineUsers() {
-        List<User> list = new ArrayList<>();
-        list.add(user);
-        SendList thread = new SendList(connection.getOut(), list);
-        new Thread(thread).start();
-    }
-
     public void updateOnlineUsers(List<User> list) {
         onlineUsers = list;
-    }
-
-    public void sendMessage(String chatName, String text) {
-        System.out.println("MainController: enviando mensaje "+text);
-        ChatContext context = contexts.get(chatName);
-        if(context != null) {
-            Chat chat = context.getChat();
-            Message message = new Message(user, chat, text);
-            message.addToChat();
-            context.getState().addNewMessage(message);
-            SendMessage sendMessage = new SendMessage(connection.getOut(), message);
-            new Thread(sendMessage).start();
-            updatePreviewChats();
-        }
     }
 
     /**
@@ -273,7 +273,10 @@ public class MainController implements ChatViewMediator, Mediator, ChatsPreviewM
         return list;
     }
 
-    public static boolean containsIgnoreCase(String str, String searchStr)     {
+    /*
+     * Código obtenido en https://stackoverflow.com/questions/14018478/string-contains-ignore-case
+     */
+    private static boolean containsIgnoreCase(String str, String searchStr)     {
         if(str == null || searchStr == null) return false;
 
         final int length = searchStr.length();

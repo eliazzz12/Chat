@@ -8,6 +8,7 @@ public interface OnlineUsersMediator {
     void newPrivateChat(User user);
     void newGroupChat(String name, List<User> users);
     void askForOnlineUsers();
+    void onlineUsersMenu();
     void setChatView();
     User getUser();
 }
